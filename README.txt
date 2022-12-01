@@ -10,7 +10,9 @@ see the credits file for credits.
 
 on windows...
 there is a convinient script i made for you.
-execute start.bat. then drop a directory containing the novel you wish to read.
+first place a copy of love into a new folder called "love".
+after that, execute start.bat. 
+after that, drop a directory containing the novel you wish to read.
 alternatively, drop the directory onto start.bat.
 
 on linux...
