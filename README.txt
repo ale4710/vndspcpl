@@ -2,7 +2,7 @@ vnds pc player
 (working title)
 
 created by ale4710
-version 2022-11-22
+version 2022-11-30
 
 see the credits file for credits.
 
@@ -91,6 +91,10 @@ it is probably not helpful if your storage device is fast, so use this option to
 it will hide the arrow that lets you know that you can proceed.
 if you dont like the arrow, use this option to disable it.
 be warned, that disabling this will make it unclear whether or not you can continue in some cases.
+
+	--debug-overlay
+it shows debug info over the screen. this is to show other info which is hard to show in the console.
+currently it only shows set variables.
 
 --[[ support ]]--
 
