@@ -1,0 +1,186 @@
+spec: https://github.com/VaYurik/vnds-online/blob/master/commands_list.txt
+
+[variables]
+	commands:
+		"setvar" - supported
+		"var" - supported
+		"gsetvar" - supported
+		"gvar" - supported
+	operators:
+		"~" (set to 0) - not supported
+		"=" - supported
+		"+" - supported
+		"-" - supported
+		"." (string concat) - not supported
+		"*" - not supported
+		"/" - not supported
+
+[random]
+	commands:
+		"random" - supported
+		"rand" - supported
+	notes:
+		one value variant is supported.
+
+[background images]
+	info:
+		in vnds2, this is much more complex.
+		
+		form is:
+		bg [filename or color code] [X-alignment] [Y-alignment] [effect] [duration]
+		
+	commands:
+		"bgload" - supported, normal vnds only.
+			this will clear the entire screen.
+		"bg" - not supported
+			this will NOT clear the entire screen.
+
+[background color]
+	info:
+		accepts color hex code, of lengths 3 or 6.
+	commands:
+		"bgcolor" - not supported
+		"bgc" - not supported
+
+[sprites]
+	info:
+		sprites in vnds2 work EXTREMELY differently then in normal vnds.
+		it will require remaking the way sprites are drawn, so it is not supported as of now.
+		
+		form is:
+		img [id] [filename] [x-coordinate] [y-coordinate] [filter] [filter strength] [effect] [duration]
+		img [id] [filename] [x-coordinate] [y-coordinate] [duration]
+			(removing)
+		img [id/filename] ~ [duration]
+		img * ~ [duration] or img ~ [duration]
+
+	commands:
+		"setimg" - supported, normal vnds only.
+		"img" - not supported
+		"sprite" - not supported.
+
+[effects]
+	info:
+		not supported.
+		
+		form is:
+		effect [id/filename/*] [effect] [strength] [duration]
+		effect [id/filename/*] ~
+		effect ~
+	
+	commands:
+		"effect" - not supported
+		"eff" - not supported
+
+[continous animation]
+	info:
+		it plays a continuous animation.
+		
+		form is:
+		relay [filename 1] [filename 2] [filename N] [delay] [effect] [duration]
+		relay ~
+	
+	commands:
+		"relay" - not supported
+		"rel" - not supported
+
+[animation]
+	info:
+		the spec is kind of unclear about what exactly this is.
+		it seems to play a specific continous animation defined by the engine.
+		for now, the spec only defines one animation, which is "snow"
+		
+		form is:
+		animation [animation] [strength]
+		animation ~
+	
+	commands:
+		"animation" - not supported
+		"anim" - not supported
+
+[text - clear]
+	info:
+		it clears the textbox.
+		
+		interestingly, vnds2 seems to NOT support the "!" parameter of this command.
+		putting "!" as a paramter here will also clear the text buffer (e.g. text history).
+	
+	commands:
+		"cleartext" - not supported
+		"clt" - not supported
+
+
+[text - display]
+	info:
+		it displays text.
+		
+		there are things you can specify before the text.
+		"~" - creates a blank line without stopping, kind of like a line break.
+			supported.
+		"@" - prints text without stopping, kind of line a line break.
+			supported.
+		"@@" - prints text without stopping, but without putting a line break.
+			not supported.
+		"!" - creates a blank line, and then stops.
+			supported.
+		"+" - adds text to already printed text, after putting a line break.
+			not supported.
+		"++" - adds text to already printed text, without putting a line break.
+			not supported.
+	
+		html tags are not supported.
+		
+		there is also a way to specify a name.
+			text [Tsumugi] (Hehehe, yet another failure to add to my memories.)
+		it will show up kind of like...
+
+			+-[ Tsumugi ]---------------+
+			|  Hehehe, yet another      |
+			|  failure to add to my     |
+			|  memories.                |
+			+---------------------------+
+			
+		this is not supported.
+
+
+		there is also a shortcut for display text.
+		these shortcuts are not supported.
+		
+		putting
+			"hello!"
+		is the same as
+			text hello!
+		and displayed as
+			+---------------------------+
+			|  Hello!                   |
+			|                           |
+			|                           |
+			+---------------------------+
+
+		putting
+			["Take a look!"
+		is the same as
+			text "Take a look"!
+		and displayed as
+			+---------------------------+
+			|  Take a look!             |
+			|                           |
+			|                           |
+			+---------------------------+
+
+	commands:
+		"text" - supported, as stated above
+		"mes" - not supported
+		"msg" - not supported
+
+[videos]
+	info:
+		it displays video.
+	
+		form is:
+		vid [filename] [effect] [duration]
+		
+	commands:
+		"video" - supported
+
+( i gave up at this point )
