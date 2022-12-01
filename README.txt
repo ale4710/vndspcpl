@@ -31,6 +31,10 @@ they are most likely not supported, due to how these operating systems deal with
 
 there are options you can pass on to the program.
 if you're using windows, the options can be added into start.bat. see the contents of start.bat file for an example.
+
+!! important !!
+the last options given will ALWAYS be interpreted as the novel path.
+
 the options are...
 
 	--window-title-additional "[text]"
