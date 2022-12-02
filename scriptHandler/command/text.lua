@@ -32,7 +32,7 @@ return function(ci)
 			do
 				local ttp = {}
 				local last = 1
-				while(last < #text) do
+				while(last <= #text) do
 					local start, stop, param = text:find(TEXT_COLORED_PATTERN, last)
 					if(not start) then 
 						table.insert(ttp, text:sub(last))
