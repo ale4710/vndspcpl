@@ -100,7 +100,9 @@ return function(mss)
 	end
 	
 	function choicesState:draw()
-		mss.draw(self)
+		--mss.draw(self)
+		love.graphics.setColor(colors.white)
+		mss.drawScreen(self)
 	
 		love.graphics.setBlendMode('alpha', 'premultiplied')
 		love.graphics.draw(

@@ -133,7 +133,10 @@ function interface.recalculateLineHeights()
 end
 
 function interface.processPendingText()
-	if(#pendingText ~= 0) then 
+	if(
+		pendingText and
+		#pendingText ~= 0
+	) then 
 		for k in pairs(mostRecent) do 
 			mostRecent[k] = nil
 		end
@@ -180,10 +183,10 @@ function interface.processPendingText()
 				fullscreenTextRenderer.draw()
 			end
 		end
-		pendingText = {}
 	else
 		clearTextBox()
 	end
+	pendingText = nil
 end
 
 function interface.update(dt)

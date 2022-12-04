@@ -74,7 +74,10 @@ actionFns['choices'] = function(at)
 	pendingChoices = at.choices
 end
 
-actionFns['text'] = function(at) 
+actionFns['text'] = function(at)
+	if(not lPendingText) then
+		lPendingText = {}
+	end
 	table.insert(lPendingText, at)
 end
 
@@ -150,7 +153,7 @@ return function(mss)
 		--pendingBgm = nil
 		stopExistingBgm = false
 		--pendingChoices = nil
-		lPendingText = {}
+		--lPendingText = {}
 		--nextLabel = nil
 		--latestAction = nil
 		
@@ -283,12 +286,12 @@ return function(mss)
 			})
 			
 			--put it in the normal pending texts
-			for _, text in ipairs(lPendingText) do 
-				table.insert(pendingText, text)
+			if(lPendingText) then
+				pendingText = lPendingText
+				
+				textbox.animator.forceDone()
+				textbox.processPendingText()
 			end
-			
-			textbox.animator.forceDone()
-			textbox.processPendingText()
 			
 			--go...
 			print('[progressingState] switch to ' .. self:getChange().state)

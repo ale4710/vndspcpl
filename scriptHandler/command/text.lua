@@ -29,7 +29,7 @@ return function(ci)
 			end
 			
 			local textTable = {type = 'text'}
-			do
+			if(not blank) then
 				local ttp = {}
 				local last = 1
 				while(last <= #text) do
