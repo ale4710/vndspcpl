@@ -9,6 +9,8 @@ local lPendingText
 local nextLabel
 local latestAction
 
+local saveFileSprites
+
 --actions...
 local actionFns = {}
 actionFns['image'] = function(at)
@@ -31,7 +33,15 @@ actionFns['image'] = function(at)
 		table.insert(pendingDraw, 1, promise)
 		saveFileManager.updateSaveFile(nil, nil, nil, at.path or '')
 	else
+		if(not saveFileSprites) then
+			saveFileSprites = {}
+		end
 		table.insert(pendingDraw, promise)
+		table.insert(saveFileSprites, {
+			path = at.path,
+			x = at.x,
+			y = at.y
+		})
 	end
 end
 
@@ -177,6 +187,16 @@ return function(mss)
 		
 		--graphics
 		if(#pendingDraw ~= 0) then
+			--if we are here then the screen updated
+			--update save file
+			--note: the background has already been updated
+			saveFileManager.updateSaveFile(
+				nil, nil, nil, nil,
+				saveFileSprites or emptytable
+			)
+			saveFileSprites = nil
+		
+			--promises
 			local dp = Promise(pendingDraw):all_settled():and_then(function(images)
 				for _, imgInfo in ipairs(images) do 
 					imgInfo = imgInfo.value
