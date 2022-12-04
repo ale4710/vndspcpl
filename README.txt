@@ -2,7 +2,7 @@ vnds pc player
 (working title)
 
 created by ale4710
-version 2022-11-30
+https://gitlab.com/ale4710/vndspcpl
 
 see the credits file for credits.
 
@@ -53,7 +53,7 @@ normally, it will allow multiple sound effects.
 	--base-font-size [fontsize]
 it will set the base font size, before scaling.
 
-	--text scale
+	--text scale [scale factor]
 it will set the text scaling, after base font size.
 
 	--text-box-mode [mode]
