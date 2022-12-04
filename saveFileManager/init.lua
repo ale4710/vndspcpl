@@ -68,10 +68,11 @@ local function updateSlot(file, slot)
 		copiedFile.music = file.music
 		copiedFile.background = file.background
 		
-		copiedFile.variables = {}
+		local updsVariables = {} --just in case the file is a choice
+		copiedFile.variables = updsVariables
 		table.shallowCopy(
 			file.variables,
-			copiedFile.variables
+			updsVariables
 		)
 		
 		copiedFile.sprites = {}
@@ -124,9 +125,13 @@ local function updateSlot(file, slot)
 						elseif(command == 'choice') then
 							if(#text == 0) then 
 								item.choice = true
-								text = (
-									'[Choice] ' .. param:gsub('|', SLOT_PREVIEW_TEXT_SPLITTER) .. SLOT_PREVIEW_TEXT_SPLITTER
-								)
+								text = '[Choice] '
+								for _, choice in ipairs(
+									string.split(param, '|', true)
+								) do 
+									choice = variableHandler.convertVariables(choice, updsVariables)
+									text = text .. choice .. SLOT_PREVIEW_TEXT_SPLITTER
+								end
 							end
 							break
 						elseif(SLOT_PREVIEW_STOP_COMMANDS[command]) then
@@ -139,7 +144,6 @@ local function updateSlot(file, slot)
 			end
 			if(#text ~= 0) then
 				item.text = text:sub(1, #text - #SLOT_PREVIEW_TEXT_SPLITTER)
-				--print(item.text)
 			end
 			
 			local promises = {}
