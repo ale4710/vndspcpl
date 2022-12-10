@@ -43,9 +43,5 @@ return function(mss)
 		end
 	end
 	
-	function awaitingUserState:exitedState()
-		
-	end
-	
 	return awaitingUserState
 end
