@@ -20,11 +20,17 @@ for _, mod in pairs({
 	package.loaded[fullmod] = nil
 end
 local currentState
-function interface.setCurrentState(state)
-	currentState = state
-end
+
 local function getCurrentState()
 	return currentState and states[currentState]
+end
+
+function interface.setCurrentState(state)
+	currentState = state
+	local cs = getCurrentState()
+	if(cs and cs.reset) then 
+		cs.reset()
+	end
 end
 
 function interface.draw(x, y, w, h)

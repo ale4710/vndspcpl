@@ -4,9 +4,15 @@ return function(settings)
 	
 	local arrowFlip = false
 	
+	local timeOffset = 0
+	
 	return {
 		sendInfo = (function(flip)
 			arrowFlip = not not flip
+		end),
+		
+		reset = (function()
+			timeOffset = now()
 		end),
 		
 		draw = (function(x, y, w, h)
@@ -49,7 +55,7 @@ return function(settings)
 			love.graphics.polygon('line', unpack(folderShape))
 			
 			
-			if((math.floor(now() * 15) % 2) == 0) then
+			if((math.floor((now() - timeOffset) * 15) % 2) == 0) then
 				--arrow
 				local arrowXpos = nx + (s * 0.64)
 				local arrowBottom = ny + (s * 0.67)
