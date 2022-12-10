@@ -8,6 +8,7 @@ local pendingChoices
 local lPendingText
 local nextLabel
 local latestAction
+local pendingFileOperation
 
 local saveFileSprites
 
@@ -55,6 +56,7 @@ actionFns['sfx'] = function(at)
 		pendingSfx = {}
 		stopExistingSounds = true
 	else
+		pendingFileOperation = true
 		local sndPromise = vnResource.get('sound', at.path):and_then(function(sound)
 			return Promise({
 				loops = at.loops,
@@ -71,6 +73,7 @@ actionFns['bgm'] = function(at)
 		stopExistingBgm = true
 		saveFileManager.updateSaveFile(nil, nil, '')
 	else
+		pendingFileOperation = true
 		saveFileManager.updateSaveFile(nil, nil, at.path or '')
 		pendingBgm = vnResource.get('sound', at.path):and_then(function(bgm)
 			pendingBgm = bgm
@@ -149,10 +152,6 @@ return function(mss)
 	local progressingState = mss:addState('progressing')
 	
 	function progressingState:enteredState()
-		--set icon
-		statusIcon.setCurrentState('fileOperation')
-		statusIcon.sendInfo(false)
-		
 		--forward change
 		self:nextChange()
 		
@@ -166,6 +165,7 @@ return function(mss)
 		--lPendingText = {}
 		--nextLabel = nil
 		--latestAction = nil
+		pendingFileOperation = false
 		
 		currentCycle = scriptHandler.progress()
 		latestAction = currentCycle[#currentCycle]
@@ -181,6 +181,14 @@ return function(mss)
 			if(index == #currentCycle.actions) then 
 				latestAction = action
 			end
+		end
+		
+		--set icon
+		if(pendingFileOperation) then
+			statusIcon.setCurrentState('fileOperation')
+			statusIcon.sendInfo(false)
+		else
+			statusIcon.setCurrentState()
 		end
 		
 		local promiseWaitingAll = {}
