@@ -20,13 +20,21 @@ indent_mode=2
 [project]
 name=vndspcpl
 base_path=./
+description=
 
 [long line marker]
 long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=-1
+current_page=6
+FILE_NAME_0=3552;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2FsaveFileManager%2Finit.lua;0;4
+FILE_NAME_1=162;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2Fstates%2Fmain%2FawaitingUser.lua;0;4
+FILE_NAME_2=4101;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2Fstates%2Fmain%2Fprogressing.lua;0;4
+FILE_NAME_3=952;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2Fmain.lua;0;4
+FILE_NAME_4=677;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2FvariableHandler.lua;0;4
+FILE_NAME_5=2279;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2Fstates%2Floadsave%2Floader.lua;0;4
+FILE_NAME_6=639;None;0;EUTF-8;1;1;0;%2Fhome%2Fale4710%2FDocuments%2Fvndspcp%2FREADME.txt;0;4
 
 [VTE]
 last_dir=/media/Sekibanki/kaiosp/bankitube
