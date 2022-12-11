@@ -50,6 +50,9 @@ then the window title will become "Snow Sakura (vnds)"
 if you pass this option, it will only allow one sound effect to play at a time.
 normally, it will allow multiple sound effects.
 
+	--disable-sounds
+disables sounds, execpt message box sound.
+
 	--base-font-size [fontsize]
 it will set the base font size, before scaling.
 
@@ -73,9 +76,6 @@ it will allow showing the textbox, even when there is no text in the textbox.
 
 	--ignore-novel-font
 it will not use the font given by the novel.
-
-	--disable-sound
-disables sound
 
 	--disallow-skipping-transitions
 	--disallow-skipping-delays
@@ -116,6 +116,6 @@ the info.txt file is supported.
 
 icon.png and thumbnail.png are supported, but icon-high.png and thumbnail-high.png are NOT supported. *.jpg (for these) is not supported.
 
-individual zip files containing the resources (background.zip, script.zip, etc.) are supported.
+individual zip files containing the resources (background.zip, script.zip, etc.) are supported. however, like vnds on ds, it must be using STORE mode.
 
 there is partial support for the vnds2 spec. see the vnds2-support.txt file for details.
