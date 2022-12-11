@@ -48,7 +48,6 @@ function love.load(cmdArguments)
 	soundHandler = require('soundHandler')
 	textbox = require('textbox')
 	statusIcon = require('statusIcon')
-	--UIshortcut = require('drawUiShortcut')
 	--love.keyboard.setKeyRepeat(true)
 	collectgarbage('setstepmul', 400)
 
