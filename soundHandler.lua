@@ -64,12 +64,13 @@ function sfxClass:isPlaying()
 	return self.src:isPlaying() or (self.loopsPassed < self.loops)
 end
 function sfxClass:getProgress()
-	if(
-		(self.loops ~= true) and
-		(not self.done)
-	) then 
-		local duration = self.snd:getDuration()
-		return (self.snd:tell() + (self.loopsPassed * duration)) / (duration * self.loops)
+	if(self.loops ~= true) then
+		if(self.done) then
+			return 1
+		else
+			local duration = self.src:getDuration()
+			return (self.src:tell() + ((self.loopsPassed - 1) * duration)) / (duration * self.loops)
+		end
 	end
 end
 
@@ -100,18 +101,29 @@ end
 function interface.getSfxProgress()
 	if(#playingSfx ~= 0) then 
 		local progs = {}
-		for _, snd in pairs(playingSfx) do 
-			table.insert(progs, snd:getProgress())
+		for _, snd in ipairs(playingSfx) do
+			local progress = snd:getProgress()
+			if(progress) then 
+				table.insert(progs, progress)
+			end
 		end
-		return progs
+		if(#progs ~= 0) then 
+			return progs
+		end
 	end
 end
 
 function interface.update()
-	for k, src in pairs(playingSfx) do
-		src:check()
-		if(src.done) then
-			playingSfx[k] = nil
+	do 
+		local index = 1
+		while(index <= #playingSfx) do
+			local src = playingSfx[index]
+			if(src.done) then 
+				table.remove(playingSfx, index)
+			else
+				src:check()
+				index = index + 1
+			end
 		end
 	end
 end

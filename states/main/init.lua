@@ -42,7 +42,9 @@ mainstateSubstates.rawInput = emptyfn
 function mainstateSubstates:draw()
 	love.graphics.setColor(colors.white)
 	self:drawScreen()
-	UIshortcut.drawAll()
+	textbox.draw()
+	mainstateSubstates.drawStatusIcon()
+	mainstateSubstates.drawSoundEffectsTimes() 
 end
 
 function mainstateSubstates:drawScreen(screenOverride)
@@ -53,6 +55,69 @@ function mainstateSubstates:drawScreen(screenOverride)
 			screen,
 			unpack(renderer.drawArguments)
 		)
+	end
+end
+
+--common fns
+do 
+	local sis = 24
+	function mainstateSubstates.drawStatusIcon()
+		statusIcon.draw(
+			SCREEN.w - (sis * 2),
+			SCREEN.h - (sis * 2),
+			sis, sis
+		)
+	end
+	
+	local progressWidth = SCREEN.w * 0.07
+	local progressHeight = 3
+	local progressMargin = 1
+	local progressRightMargin = 8
+	local progressColor = colors.white
+	local progressBgColor = {colora(colors.white, 0.3)}
+	local progressWindowBgColor = colors.black
+	function mainstateSubstates.drawSoundEffectsTimes() 
+		local progressTimes = soundHandler.getSfxProgress()
+		if(progressTimes) then
+			local initY = SCREEN.h - sis
+			local height = ((progressHeight + progressMargin) * #progressTimes) + progressMargin
+			if(height < sis) then
+				initY = initY - (sis / 2) - (height / 2)
+			else
+				initY = initY - height
+			end
+			initY = initY + progressMargin
+			local x = SCREEN.w - (sis * 2) - progressRightMargin - (progressMargin * 2) - progressWidth
+			--draw background
+			love.graphics.setColor(progressWindowBgColor)
+			love.graphics.rectangle(
+				'fill',
+				x - progressMargin,
+				initY - progressMargin,
+				progressWidth + (progressMargin * 2),
+				height
+			)
+			--draw bars
+			for index, thisProgress in ipairs(progressTimes) do 
+				local y = initY + ((progressHeight + progressMargin) * (index - 1))
+				
+				love.graphics.setColor(progressBgColor)
+				love.graphics.rectangle(
+					'fill',
+					x, y,
+					progressWidth,
+					progressHeight
+				)
+				
+				love.graphics.setColor(progressColor)
+				love.graphics.rectangle(
+					'fill',
+					x, y,
+					(progressWidth * thisProgress),
+					progressHeight
+				)
+			end
+		end
 	end
 end
 

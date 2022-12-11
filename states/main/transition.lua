@@ -47,7 +47,9 @@ return function(mss)
 		mss.drawScreen(self)
 		love.graphics.setColor(colora(colors.white, currentOpacity))
 		mss.drawScreen(self, newscreen)
-		UIshortcut.drawAll()
+		textbox.draw()
+		mss.drawStatusIcon()
+		mss.drawSoundEffectsTimes()
 	end
 	
 	function transitionstate:exitedState()
