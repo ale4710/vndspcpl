@@ -37,7 +37,9 @@ return function(cmdArguments)
 		
 		hideAwaitingUserIndicator = false,
 		
-		disableSounds = false
+		disableSounds = false,
+		
+		indicateInfiniteSfx = false
 	}
 	fontSize = 64
 
@@ -145,6 +147,12 @@ return function(cmdArguments)
 			['disable-sounds'] = {
 				during = (function()
 					userSettings.disableSounds = true
+				end)
+			},
+			
+			['indicate-infinite-sound-effects'] = {
+				during = (function()
+					userSettings.indicateInfiniteSfx = true
 				end)
 			},
 

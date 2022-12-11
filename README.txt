@@ -50,6 +50,10 @@ then the window title will become "Snow Sakura (vnds)"
 if you pass this option, it will allow multiple sound effects to played at a time.
 looping sound effects will stop on the next sound effect.
 
+	--indicate-infinite-sound-effects
+there is a progress bar for sound effects, however nothing is shown for infinite sound effects.
+if you pass this option, it will show an indicator for infinite sound effects.
+
 	--disable-sounds
 disables sounds, execpt message box sound.
 

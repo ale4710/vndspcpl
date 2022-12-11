@@ -1,7 +1,26 @@
 local interface = {}
 
+local function assertVolume(volume) 
+	assert(type(volume) == 'number', 'Volume must be number.')
+	assert(
+		(
+			(volume <= 1) and
+			(volume >= 0)
+		),
+		'Volume out of bounds. Must be within [0,1]'
+	)
+end
+
 --bgm
 local currentBgm
+local bgmVolume = 1
+function interface.setBgmVolume(volume)
+	assertVolume(volume)
+	bgmVolume = volume
+	if(currentBgm) then 
+		currentBgm:setVolume(bgmVolume)
+	end
+end
 function interface.changeBgm(src)
 	if(userSettings.disableSounds) then return end
 	print(
@@ -16,12 +35,23 @@ function interface.changeBgm(src)
 	if(src) then 
 		currentBgm = src:clone()
 		currentBgm:setLooping(true)
+		currentBgm:setVolume(bgmVolume)
 		currentBgm:play()
 	end
 end
 
 --sfx
 local playingSfx = {}
+local sfxVolume = 1
+function interface.setSfxVolume(volume) 
+	assertVolume(volume)
+	sfxVolume = volume
+	for _, sfx in pairs(playingSfx) do 
+		if(not sfx.done) then 
+			sfx.src:setVolume(sfxVolume)
+		end
+	end
+end
 
 local sfxClass = class('sfxClass')
 function sfxClass:initialize(src, loops)
@@ -34,11 +64,13 @@ function sfxClass:initialize(src, loops)
 			self.src:setLooping(true)
 			self.src:play()
 		end
+		self.src:setVolume(sfxVolume)
 		self.loopsPassed = 0
 		table.insert(playingSfx, self)
 	end
 end
 function sfxClass:check()
+	--this excludes infinite looping sounds.
 	if(
 		(not self.done) and
 		(not self.src:isPlaying()) and
@@ -64,13 +96,13 @@ function sfxClass:isPlaying()
 	return self.src:isPlaying() or (self.loopsPassed < self.loops)
 end
 function sfxClass:getProgress()
-	if(self.loops ~= true) then
-		if(self.done) then
-			return 1
-		else
-			local duration = self.src:getDuration()
-			return (self.src:tell() + ((self.loopsPassed - 1) * duration)) / (duration * self.loops)
-		end
+	if(self.loops == true) then
+		return true
+	elseif(self.done) then
+		return 1
+	else
+		local duration = self.src:getDuration()
+		return (self.src:tell() + ((self.loopsPassed - 1) * duration)) / (duration * self.loops)
 	end
 end
 

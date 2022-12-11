@@ -71,6 +71,8 @@ do
 	
 	local progressWidth = SCREEN.w * 0.07
 	local progressHeight = 3
+	local progressIndefiniteWidth = 0.3 --relative to progressWidth
+	local progressIndefiniteSpeed = 2 --interval in seconds between hitting the edge
 	local progressMargin = 1
 	local progressRightMargin = 8
 	local progressColor = colors.white
@@ -79,43 +81,80 @@ do
 	function mainstateSubstates.drawSoundEffectsTimes() 
 		local progressTimes = soundHandler.getSfxProgress()
 		if(progressTimes) then
-			local initY = SCREEN.h - sis
-			local height = ((progressHeight + progressMargin) * #progressTimes) + progressMargin
-			if(height < sis) then
-				initY = initY - (sis / 2) - (height / 2)
+			local proceed = false
+			
+			if(userSettings.indicateInfiniteSfx) then 
+				proceed = true
 			else
-				initY = initY - height
+				do 
+					local index = 1
+					while(index <= #progressTimes) do 
+						local progress = progressTimes[index]
+						if(progress == true) then 
+							table.remove(progressTimes, index)
+						else
+							proceed = true
+							index = index + 1
+						end
+					end
+				end
 			end
-			initY = initY + progressMargin
-			local x = SCREEN.w - (sis * 2) - progressRightMargin - (progressMargin * 2) - progressWidth
-			--draw background
-			love.graphics.setColor(progressWindowBgColor)
-			love.graphics.rectangle(
-				'fill',
-				x - progressMargin,
-				initY - progressMargin,
-				progressWidth + (progressMargin * 2),
-				height
-			)
-			--draw bars
-			for index, thisProgress in ipairs(progressTimes) do 
-				local y = initY + ((progressHeight + progressMargin) * (index - 1))
-				
-				love.graphics.setColor(progressBgColor)
+			
+			if(proceed) then
+				local initY = SCREEN.h - sis
+				local height = ((progressHeight + progressMargin) * #progressTimes) + progressMargin
+				if(height < sis) then
+					initY = initY - (sis / 2) - (height / 2)
+				else
+					initY = initY - height
+				end
+				initY = initY + progressMargin
+				local x = SCREEN.w - (sis * 2) - progressRightMargin - (progressMargin * 2) - progressWidth
+				--draw background
+				love.graphics.setColor(progressWindowBgColor)
 				love.graphics.rectangle(
 					'fill',
-					x, y,
-					progressWidth,
-					progressHeight
+					x - progressMargin,
+					initY - progressMargin,
+					progressWidth + (progressMargin * 2),
+					height
 				)
-				
-				love.graphics.setColor(progressColor)
-				love.graphics.rectangle(
-					'fill',
-					x, y,
-					(progressWidth * thisProgress),
-					progressHeight
-				)
+				--draw bars
+				for index, thisProgress in ipairs(progressTimes) do 
+					local y = initY + ((progressHeight + progressMargin) * (index - 1))
+					
+					love.graphics.setColor(progressBgColor)
+					love.graphics.rectangle(
+						'fill',
+						x, y,
+						progressWidth,
+						progressHeight
+					)
+					
+					love.graphics.setColor(progressColor)
+					--check infinite
+					if(thisProgress == true) then
+						local lnow = now() * progressIndefiniteSpeed
+						local currentOffset = (lnow % 1)
+						if(math.floor(lnow % 2) == 0) then 
+							currentOffset = 1 - currentOffset
+						end
+						local currentOffsetPosition = currentOffset * (progressWidth * (1 - progressIndefiniteWidth))
+						love.graphics.rectangle(
+							'fill',
+							x + currentOffsetPosition, y,
+							progressWidth * progressIndefiniteWidth,
+							progressHeight
+						)
+					else
+						love.graphics.rectangle(
+							'fill',
+							x, y,
+							(progressWidth * thisProgress),
+							progressHeight
+						)
+					end
+				end
 			end
 		end
 	end
