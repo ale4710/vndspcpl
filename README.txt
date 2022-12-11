@@ -74,6 +74,9 @@ it will allow showing the textbox, even when there is no text in the textbox.
 	--ignore-novel-font
 it will not use the font given by the novel.
 
+	--disable-sound
+disables sound
+
 	--disallow-skipping-transitions
 	--disallow-skipping-delays
 it will not allow you to skip transitions or delays.
