@@ -29,7 +29,7 @@ return function(mss)
 		) then 
 			proceed(self)
 		elseif(action == INPUT_ACTIONS.cancel) then
-			game:gotoState('loadsave')
+			game:gotoState('menu')
 		end
 	end
 	

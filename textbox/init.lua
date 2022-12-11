@@ -2,7 +2,7 @@ local mn = ...
 local interface = {}
 
 local previousPendingText
-pendingText = {} --global variable
+--pendingText = {} --global variable
 
 local boxMargin = 15
 local boxPadding = 15
@@ -177,12 +177,11 @@ function interface.processPendingText()
 		else
 			calculateLineHeights(true)
 			characterAnimator.start(mostRecent)
-			
 			if(userSettings.textBoxMode == 0) then 
 				characterAnimator.forceDone()
-				fullscreenTextRenderer.draw()
 			end
 		end
+		fullscreenTextRenderer.draw()
 	else
 		clearTextBox()
 	end

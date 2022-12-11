@@ -87,9 +87,10 @@ function love.load(cmdArguments)
 	states = {}
 	for _, state in pairs({
 		'boot',
+		'waiting',
 		'main',
 		'loadsave',
-		'waiting'
+		'menu'
 	}) do
 		states[state] = require('states.' .. state)
 	end

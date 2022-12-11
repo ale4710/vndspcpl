@@ -133,7 +133,7 @@ return function(mss)
 				self:getChange().state
 			)
 		elseif(action == INPUT_ACTIONS.cancel) then
-			game:gotoState('loadsave')
+			game:gotoState('menu')
 		end
 	end
 	
