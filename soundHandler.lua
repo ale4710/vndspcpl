@@ -24,13 +24,15 @@ end
 local playingSfx = {}
 
 local sfxClass = class('sfxClass')
-function sfxClass:initialize(src, loops) 
+function sfxClass:initialize(src, loops)
+	print('[soundHandler] play sound, playing ' .. (loops or 1) .. ' time(s)')
 	self.loops = loops or 1
 	if(self.loops ~= 0) then
 		self.src = src:clone()
 		if(self.loops == -1) then
 			self.loops = true
-			self.src:setLooping(true) 
+			self.src:setLooping(true)
+			self.src:play()
 		end
 		self.loopsPassed = 0
 		table.insert(playingSfx, self)
@@ -74,18 +76,18 @@ end
 function interface.playSfx(src, loopAmount)
 	if(userSettings.disableSounds) then return end
 	if(src and userSettings.oneSoundEffectOnly) then
-		interface.playSfx()
+		interface.playSfx() --stop all
 	end
 	
 	if(src) then
-		print('[soundHandler] play a sound')
-		sfxClass:new(src, loopAmount)
 		--stop any infinite looping sounds
 		for _, playingSrc in pairs(playingSfx) do
 			if(playingSrc.loops == true) then 
 				playingSrc:stop()
 			end
 		end
+		
+		sfxClass:new(src, loopAmount)
 	else
 		--empty means stop everything
 		print('[soundHandler] stopped all sound effects')
