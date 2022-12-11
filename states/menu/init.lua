@@ -34,12 +34,20 @@ local menuActions = {
 			--return true
 		end),
 		label = 'Text Display'
+	},
+	['quit'] = {
+		fn = (function()
+			love.event.quit()
+			return true
+		end),
+		label = 'Quit'
 	}
 }
 local menuOrder = {
 	'saveload',
 	'cycletextbox',
-	'reset'
+	'reset',
+	'quit'
 }
 
 local navigator = navigatorClass:new()
