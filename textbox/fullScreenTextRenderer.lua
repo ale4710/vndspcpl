@@ -63,13 +63,16 @@ function interface.draw()
 		movedPx = movedPx + textHeight
 		
 		if(cur and cur.text) then
-			--love.graphics.setFont(font)
-			love.graphics.printf(
-				cur.text,
-				0,
-				screen:getHeight() - movedPx,
-				screen:getWidth()
-			)
+			local y, w = (screen:getHeight() - movedPx), (screen:getWidth())
+			
+			if(i == 1) then 
+				love.graphics.rectangle(
+					'fill',
+					0, y,
+					w, (1 / userSettings.textScale)
+				)
+			end
+			love.graphics.printf(cur.text, 0, y, w)
 			
 			-- if(
 				-- i == 1 and
