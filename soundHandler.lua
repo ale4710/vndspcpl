@@ -1,8 +1,11 @@
 local interface = {}
 
+interface.disabled = false
+
 --bgm
 local currentBgm
 function interface.changeBgm(src)
+	if(interface.disabled) then return end
 	print(
 		(src and 'bgm updated') or
 		'bgm stopped'
@@ -71,6 +74,7 @@ function sfxClass:getProgress()
 end
 
 function interface.playSfx(src, loopAmount)
+	if(interface.disabled) then return end
 	if(src and userSettings.oneSoundEffectOnly) then
 		interface.playSfx()
 	end
