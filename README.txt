@@ -46,9 +46,9 @@ but if you pass the option
 	--window-title-additional "(vnds)"
 then the window title will become "Snow Sakura (vnds)"
 
-	--one-sound-effect-only
-if you pass this option, it will only allow one sound effect to play at a time.
-normally, it will allow multiple sound effects.
+	--allow-multiple-sound-effects
+if you pass this option, it will allow multiple sound effects to played at a time.
+looping sound effects will stop on the next sound effect.
 
 	--disable-sounds
 disables sounds, execpt message box sound.

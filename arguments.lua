@@ -1,7 +1,7 @@
 return function(cmdArguments)
 	--initialize some settings
 	userSettings = {
-		oneSoundEffectOnly = false,
+		oneSoundEffectOnly = true,
 		--whether or not multiple sound effects are allowed to be played
 		
 		textBoxMode = 1,
@@ -53,9 +53,9 @@ return function(cmdArguments)
 				end)
 			},
 			
-			['one-sound-effect-only'] = {
+			['allow-multiple-sound-effects'] = {
 				during = (function()
-					userSettings.oneSoundEffectOnly = true
+					userSettings.oneSoundEffectOnly = false
 				end)
 			},
 			
