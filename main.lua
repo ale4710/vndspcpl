@@ -19,7 +19,6 @@ function love.load(cmdArguments)
 	--libs
 	class = require('lib.middleclass')
 	stateful = require('lib.stateful')
-	--Promise = require('lib.promise')
 	require('lib.AndThen')
 	utf8 = require('utf8')
 
