@@ -39,7 +39,7 @@ return function(mss)
 			if(skipKeyHeldTime == 0) then
 			else
 				statusIcon.sendInfo(skipKeyHeldTime / HOLD_TIME_TO_SKIP)
-				UIshortcut.drawStatusIcon()
+				mss.drawStatusIcon()
 			end
 		end
 	end
