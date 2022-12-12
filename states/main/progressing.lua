@@ -44,6 +44,8 @@ actionFns['image'] = function(at)
 			y = at.y
 		})
 	end
+	
+	pendingFileOperation = true
 end
 
 actionFns['video'] = function(at)
