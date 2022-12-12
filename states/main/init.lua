@@ -11,7 +11,8 @@ for _, ss in pairs({
 	'choices',
 	'jump',
 	'flushGlobalVariables',
-	'playVideo'
+	'playVideo',
+	'error'
 }) do
 	local ssmn = requireppName(mn, ss)
 	require(ssmn)(mainstateSubstates)

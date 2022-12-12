@@ -1,25 +1,9 @@
 local nextLabel
 
-local instance
-
-function loadedscript(script)
-	assert(script, '[jumpState] script could not be found!')
-	scriptHandler.loadScript(script)
-	if(nextLabel) then
-		local success = scriptHandler.jumpToLabel(nextLabel)
-		if(not success) then 
-			print('[jumpState] warning! label "' .. nextLabel .. '" was not found!')
-		end
-	end
-	instance:gotoState(instance:getChange().state)
-end
-
 return function(mss)
 	local jumpState = mss:addState('jump')
 
 	function jumpState:enteredState()
-		instance = self
-		
 		statusIcon.setCurrentState()
 		
 		local jumpInfo = self:nextChange()
@@ -36,7 +20,28 @@ return function(mss)
 			statusIcon.setCurrentState('fileOperation')
 			statusIcon.sendInfo(false)
 			saveFileManager.updateSaveFile(jumpInfo.file)
-			vnResource.get('script', jumpInfo.file):and_then(loadedscript)
+			vnResource.get('script', jumpInfo.file):and_then(function(script)
+				assert(script, '[jumpState] script could not be found!')
+				scriptHandler.loadScript(script)
+				if(nextLabel) then
+					local success = scriptHandler.jumpToLabel(nextLabel)
+					if(not success) then 
+						print('[jumpState] warning! label "' .. nextLabel .. '" was not found!')
+					end
+				end
+				self:gotoState(self:getChange().state)
+			end):catch(function()
+				messageBoxWS(
+					'Fatal Error',
+						'Fatal Error: Failed to find file ' .. 
+						(
+							((type(jumpInfo.file) == 'string') and jumpInfo.file) or 
+							'(nil)'
+						),
+					'error'
+				)
+				self:gotoState('error')
+			end)
 		else
 			scriptHandler.jumpToLabel(jumpInfo.label)
 			self:gotoState(self:getChange().state)
