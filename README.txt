@@ -6,6 +6,8 @@ https://gitlab.com/ale4710/vndspcpl
 
 see the credits file for credits.
 
+demo video: https://youtu.be/Vr1maacJiJE
+
 --[[ how to start (if you dont know already) ]]--
 
 on windows...
