@@ -1,5 +1,7 @@
 return function(saveFile)
 	return vnResource.get('script', saveFile.script):and_then(function(script)
+		assert(script, 'Script not found.')
+		
 		--script stuff
 		scriptHandler.loadScript(script)
 		scriptHandler.jumpToLine(saveFile.position) -- dont +1 because progressing on main state will handle it

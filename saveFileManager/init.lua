@@ -90,92 +90,96 @@ local function updateSlot(file, slot)
 		
 		--script
 		vnResource.get('script', file.script):and_then(function(script)
-			valid = true
+			if(script == false) then 
+				return Promise()
+			else
+				valid = true
 
-			local text = ''
-			for 
-				position = file.position + 1, 
-				1,
-				-1
-			do 
-				local line = script[position]
-				if(line) then
-					local command, param = unpack(string.split(line, ' ', true, 1))
-					if(command) then
-						--print(command)
-						command = command:lower()
-						if(command == 'text') then
-							local textCommand = ''
-							if(param:find('^[!@~]')) then
-								textCommand = param:sub(1,1)
-								param = param:sub(2)
-							end
-							if(
-								(
-									#textCommand == 0 or
-									textCommand:find('!')
-								) and #text ~= 0
-							) then 
+				local text = ''
+				for 
+					position = file.position + 1, 
+					1,
+					-1
+				do 
+					local line = script[position]
+					if(line) then
+						local command, param = unpack(string.split(line, ' ', true, 1))
+						if(command) then
+							--print(command)
+							command = command:lower()
+							if(command == 'text') then
+								local textCommand = ''
+								if(param:find('^[!@~]')) then
+									textCommand = param:sub(1,1)
+									param = param:sub(2)
+								end
+								if(
+									(
+										#textCommand == 0 or
+										textCommand:find('!')
+									) and #text ~= 0
+								) then 
+									break
+								end
+								
+								if(#param ~= 0) then
+									text = param .. SLOT_PREVIEW_TEXT_SPLITTER .. text
+								end
+							elseif(command == 'choice') then
+								if(#text == 0) then 
+									item.choice = true
+									text = '[Choice] '
+									for _, choice in ipairs(
+										string.split(param, '|', true)
+									) do 
+										choice = variableHandler.convertVariables(choice, updsVariables)
+										text = text .. choice .. SLOT_PREVIEW_TEXT_SPLITTER
+									end
+								end
+								break
+							elseif(SLOT_PREVIEW_STOP_COMMANDS[command]) then
 								break
 							end
-							
-							if(#param ~= 0) then
-								text = param .. SLOT_PREVIEW_TEXT_SPLITTER .. text
-							end
-						elseif(command == 'choice') then
-							if(#text == 0) then 
-								item.choice = true
-								text = '[Choice] '
-								for _, choice in ipairs(
-									string.split(param, '|', true)
-								) do 
-									choice = variableHandler.convertVariables(choice, updsVariables)
-									text = text .. choice .. SLOT_PREVIEW_TEXT_SPLITTER
-								end
-							end
-							break
-						elseif(SLOT_PREVIEW_STOP_COMMANDS[command]) then
-							break
 						end
+					else
+						break
 					end
-				else
-					break
 				end
-			end
-			if(#text ~= 0) then
-				item.text = text:sub(1, #text - #SLOT_PREVIEW_TEXT_SPLITTER)
-			end
-			
-			local promises = {}
-			
-			--sprites
-			for index, sprite in ipairs(file.sprites) do
-				local spriteInfo = {
-					x = sprite.x,
-					y = sprite.y
-				}
-				drawingOrder[index] = spriteInfo
-
-				local spritePromise = vnResource.get('foreground', sprite.path):and_then(function(image)
-					if(image) then
-						spriteInfo.image = image
-					end
-				end)
+				if(#text ~= 0) then
+					item.text = text:sub(1, #text - #SLOT_PREVIEW_TEXT_SPLITTER)
+				end
 				
-				table.insert(promises, spritePromise)
+				local promises = {}
+				
+				--sprites
+				for index, sprite in ipairs(file.sprites) do
+					local spriteInfo = {
+						x = sprite.x,
+						y = sprite.y
+					}
+					drawingOrder[index] = spriteInfo
+
+					local spritePromise = vnResource.get('foreground', sprite.path):and_then(function(image)
+						if(image) then
+							spriteInfo.image = image
+						end
+					end)
+					
+					table.insert(promises, spritePromise)
+				end
+				
+				--background
+				do
+					local bgPromise = vnResource.get('background', file.background):and_then(function(image)
+						if(image) then
+							renderer:draw(image, 0, 0)
+						end
+					end)
+					table.insert(promises, bgPromise)
+				end
+				
+				return Promise(promises):all_settled()
 			end
-			
-			--background
-			do
-				local bgPromise = vnResource.get('background', file.background):and_then(function(image)
-					if(image) then
-						renderer:draw(image, 0, 0)
-					end
-				end)
-				table.insert(promises, bgPromise)
-			end
-			
-			return Promise(promises):all_settled()
 		end):finally(function()
 			if(valid) then 
 				listing[slot] = item
