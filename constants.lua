@@ -9,6 +9,8 @@ VN_SCREEN = {
 FRAME_LENGTH = 1 / 60
 DEFAULT_FADE_LENGTH = 16
 
+MAIN_SCR_FILE_NAME = 'main.scr'
+
 FOLDER_FILE_NAMES = {
 	'background',
 	'foreground',

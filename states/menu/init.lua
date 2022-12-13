@@ -14,7 +14,10 @@ local paddingLeft = 15
 
 local menuActions = {
 	['reset'] = {
-		fn = (function()end),
+		fn = (function()
+			mainReset()
+			return true
+		end),
 		label = 'Reset'
 	},
 	['saveload'] = {

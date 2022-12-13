@@ -67,7 +67,7 @@ function bootstate:enteredState()
 	vnResource.initialize():and_then(function()
 		--load main script, see if it exists
 		display = 'Confirming Validity...'
-		vnResource.get('script', 'main.scr'):and_then(function(script)
+		vnResource.get('script', MAIN_SCR_FILE_NAME):and_then(function(script)
 			--oh shoot! we have a script! OH MY GOD!!
 			scriptHandler.loadScript(script)
 			script = nil

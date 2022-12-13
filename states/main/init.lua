@@ -161,8 +161,7 @@ end
 
 local mssFnc = mainstateSubstates:new()
 
-function mainUpdateAllForSave()
-	mssFnc.pendingStateChanges = {}
+local function doVisualClear() 
 	mssFnc:queueChange({
 		state = 'transition',
 		delay = 0
@@ -171,9 +170,31 @@ function mainUpdateAllForSave()
 	mssFnc:gotoState('transition')
 end
 
+function mainUpdateAllForSave()
+	mssFnc.pendingStateChanges = {}
+	doVisualClear() 
+end
+
 function mainInit() 
 	mssFnc.pendingStateChanges = {}
-	mssFnc:gotoState('progressing')
+	variableHandler.reset()
+	doVisualClear()
+end
+
+function mainReset() 
+	return vnResource.get('script', MAIN_SCR_FILE_NAME):and_then(function(script)
+		if(script == false) then
+			messageBoxWS(
+				'Fatal Error',
+				'Fatal Error: Failed to find file main.scr (was the novel modified?)',
+				'error'
+			)
+			self:gotoState('error')
+		else
+			scriptHandler.loadScript(script)
+			mainInit()
+		end
+	end)
 end
 
 --main state
