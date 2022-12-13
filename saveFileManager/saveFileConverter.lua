@@ -46,6 +46,20 @@ function interface.serialize(save)
 	end
 	
 	local date = os.date('%H:%M %Y/%m/%d')
+	
+	local music = save.music
+	if(music and music ~= '') then 
+		music = (FOLDER_FILE_NAMES[4] .. '/' .. save.music)
+	else
+		music = nil
+	end
+	
+	local background = save.background
+	if(background and background ~= '') then 
+		background = (FOLDER_FILE_NAMES[1] .. '/' .. save.background)
+	else
+		background = nil
+	end
 
 	return xml.serialize({
 		{tagName = 'save', children = {
@@ -59,8 +73,8 @@ function interface.serialize(save)
 			varnode,
 			
 			{tagName = 'state', children = {
-				{tagName = 'music', innerText = (FOLDER_FILE_NAMES[4] .. '/' .. save.music)},
-				{tagName = 'background', innerText = (FOLDER_FILE_NAMES[1] .. '/' .. save.background)},
+				{tagName = 'music', innerText = music},
+				{tagName = 'background', innerText = background},
 				sprnode
 			}}
 		}}
