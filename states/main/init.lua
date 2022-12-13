@@ -21,8 +21,6 @@ end
 
 function mainstateSubstates:initialize()
 	self.screen = nil
-	
-	self.pendingStateChanges = {}
 end
 
 function mainstateSubstates:queueChange(change)
@@ -173,11 +171,12 @@ function mainUpdateAllForSave()
 	mssFnc:gotoState('transition')
 end
 
---main state
-function mainstate:enteredState()
+function mainInit() 
+	mssFnc.pendingStateChanges = {}
 	mssFnc:gotoState('progressing')
-	mainstate.enteredState = nil
 end
+
+--main state
 function mainstate:draw()
 	mssFnc:draw()
 end

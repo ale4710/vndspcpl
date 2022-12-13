@@ -149,15 +149,9 @@ function bootstate:enteredState()
 					bootstate.draw = nil
 					
 					--overwrite something
-					bootstate.enteredState = (function()
-						messageBoxWS(
-							'File Not Found',
-							'File "/script/main.scr" in the directory "' .. (gamepath or '?') .. '"could not be found!\nPlease check the directory and try again.',
-							'error'
-						)
-						self:gotoState('main')
-					end)
-				
+					bootstate.enteredState = nil
+					
+					mainInit()
 					self:gotoState('main')
 				end)
 			end)
