@@ -162,11 +162,21 @@ end
 local mssFnc = mainstateSubstates:new()
 
 local function doVisualClear() 
+	--set screen update
 	mssFnc:queueChange({
 		state = 'transition',
 		delay = 0
 	})
+	
+	--text
+	pendingText = {}
+	textbox.animator.forceDone()
+	textbox.processPendingText()
+	
+	--queue after the screen update
 	mssFnc:queueChange({state = 'progressing'})
+	
+	--go
 	mssFnc:gotoState('transition')
 end
 
