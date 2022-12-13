@@ -16,7 +16,10 @@ return function(filePath, flagoverride)
 		
 		while true do
 			local additional = file:read('*a')
-			if(additional ~= '') then
+			if(
+				(type(additional) == 'string') and
+				(additional ~= '')
+			) then
 				contents = contents .. additional
 			else
 				break
