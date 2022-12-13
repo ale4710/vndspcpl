@@ -28,6 +28,7 @@ function interface.setMargin(m)
 	margin = m / userSettings.textScale
 end
 
+local separatorHeight = 1.5
 local offsetDraw = 0
 
 function interface.draw()
@@ -66,10 +67,11 @@ function interface.draw()
 			local y, w = (screen:getHeight() - movedPx), (screen:getWidth())
 			
 			if(i == 1) then 
+				local sh = (separatorHeight / userSettings.textScale)
 				love.graphics.rectangle(
 					'fill',
-					0, y,
-					w, (1 / userSettings.textScale)
+					0, y - (sh / 2),
+					w, sh
 				)
 			end
 			love.graphics.printf(cur.text, 0, y, w)
