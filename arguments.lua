@@ -160,12 +160,16 @@ return function(cmdArguments)
 			
 			['text-box-minimum-lines'] = {
 				after = (function(lines)
-					userSettings.textboxMinimumLines = math.clamp(
-						1, math.huge,
-						math.floor(
-							tonumber(lines) or userSettings.textboxMinimumLines
+					lines = tonumber(lines)
+					if(
+						lines and
+						((lines % 1) == 0)
+					) then 
+						userSettings.textboxMinimumLines = math.clamp(
+							1, math.huge, 
+							lines
 						)
-					)
+					end
 				end)
 			},
 
