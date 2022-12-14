@@ -71,6 +71,11 @@ it will set the default mode of the textbox, where [mode] is a number from 0 to 
 1 = bottom
 2 = top
 
+	--text-box-minimum-lines [lines]
+it will set the minimum number of lines to show in the textbox. essentially, empty space.
+the textbox will expand to how many lines are required.
+lines must be an integer >= 1.
+
 	--text-progression-speed [seconds]
 it will set how fast text will be displayed.
 the number will be like "1 character every n seconds"
