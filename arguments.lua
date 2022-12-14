@@ -39,7 +39,9 @@ return function(cmdArguments)
 		
 		disableSounds = false,
 		
-		indicateInfiniteSfx = false
+		indicateInfiniteSfx = false,
+		
+		textboxMinimumLines = 4
 	}
 	fontSize = 64
 
@@ -153,6 +155,17 @@ return function(cmdArguments)
 			['indicate-infinite-sound-effects'] = {
 				during = (function()
 					userSettings.indicateInfiniteSfx = true
+				end)
+			},
+			
+			['text-box-minimum-lines'] = {
+				after = (function(lines)
+					userSettings.textboxMinimumLines = math.clamp(
+						1, math.huge,
+						math.floor(
+							tonumber(lines) or userSettings.textboxMinimumLines
+						)
+					)
 				end)
 			},
 

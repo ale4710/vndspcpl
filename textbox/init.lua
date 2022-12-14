@@ -78,7 +78,7 @@ end
 
 function interface.calculateSizes() 
 	lineHeight = font:getHeight() * userSettings.textScale
-	boxMinHeight = lineHeight * 4
+	boxMinHeight = lineHeight * userSettings.textboxMinimumLines
 	
 	boxInnerWidth = SCREEN.w - (boxMargin * 2)
 	
@@ -102,8 +102,10 @@ function calculateLineHeights(recentOnly)
 	local lines = (recentOnly and mostRecent) or buffer
 	for index, line in ipairs(lines) do 
 		if(line) then
-			local success, errorIfNotSuccess, wt = pcall(font.getWrap, font,
-				line.actualText, boxInnerWidth / userSettings.textScale
+			local success, errorIfNotSuccess, wt = pcall(font.getWrap, 
+				font,
+				line.actualText, 
+				(boxInnerWidth - (boxPadding * 2)) / userSettings.textScale
 			)
 
 			if(not success) then 
