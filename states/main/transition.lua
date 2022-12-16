@@ -6,8 +6,13 @@ return function(mss)
 	local transitionstate = mss:addState('transition')
 	
 	function transitionstate:enteredState()
+		local newscreenInfo = self:nextChange()
+		if(newscreenInfo.clear) then
+			print('[transitionState] clear the screen')
+			renderer:clear()
+		end
 		newscreen = love.graphics.newImage(renderer:get())
-		fadelength = self:nextChange().delay or 0
+		fadelength = newscreenInfo.delay or 0
 		currentOpacity = 0
 		
 		statusIcon.setCurrentState()

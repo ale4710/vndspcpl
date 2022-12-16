@@ -503,13 +503,15 @@ do
 					showFreeMessageModal('Loading...')
 					
 					loadGame(file):and_then(function(gameInfo)
+						print('[loadsave] load successful!')
 						--success
+							--reset
+						mainUpdateAllForSave()
 							--update sounds
 						soundHandler.changeBgm(gameInfo.bgm)
 						soundHandler.playSfx()
 
 						game:gotoState('main')
-						mainUpdateAllForSave()
 					end):catch(function(err)
 						print(err)
 						showFailedMessage()

@@ -161,17 +161,25 @@ end
 
 local mssFnc = mainstateSubstates:new()
 
-local function doVisualClear() 
+local function doAllClear(options) 
+	if(type(options) ~= 'table') then 
+		options = emptytable
+	end
 	--set screen update
 	mssFnc:queueChange({
 		state = 'transition',
-		delay = 0
+		delay = 0,
+		clear = options.blankScreen
 	})
 	
 	--text
 	pendingText = {}
 	textbox.animator.forceDone()
 	textbox.processPendingText()
+	
+	--audio
+	soundHandler.changeBgm()
+	soundHandler.playSfx()
 	
 	--queue after the screen update
 	mssFnc:queueChange({state = 'progressing'})
@@ -182,13 +190,15 @@ end
 
 function mainUpdateAllForSave()
 	mssFnc.pendingStateChanges = {}
-	doVisualClear() 
+	doAllClear()
 end
 
 function mainInit() 
 	mssFnc.pendingStateChanges = {}
 	variableHandler.reset()
-	doVisualClear()
+	doAllClear({
+		blankScreen = true
+	})
 end
 
 function mainReset() 
