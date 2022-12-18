@@ -30,6 +30,7 @@ please visit the love2d website for details.
 on android or ios...
 basically, it is untested.
 they are most likely not supported, due to how these operating systems deal with accessing the filesystem.
+at the moment i am blocking mobile from running this program.
 
 --[[ options ]]--
 
@@ -37,7 +38,7 @@ there are options you can pass on to the program.
 if you're using windows, the options can be added into start.bat. see the contents of start.bat file for an example.
 
 !! important !!
-the last options given will ALWAYS be interpreted as the novel path.
+the last option given will ALWAYS be interpreted as the novel path.
 
 the options are...
 
@@ -47,6 +48,7 @@ for example, the window title is normally "Snow Sakura [VNDS PC Player]"
 but if you pass the option 
 	--window-title-additional "(vnds)"
 then the window title will become "Snow Sakura (vnds)"
+note that a space will be automatically added.
 
 	--allow-multiple-sound-effects
 if you pass this option, it will allow multiple sound effects to played at a time.
@@ -78,7 +80,7 @@ lines must be an integer >= 1.
 
 	--text-progression-speed [seconds]
 it will set how fast text will be displayed.
-the number will be like "1 character every n seconds"
+the number will be interpreted as "1 character every n seconds"
 so if you set [seconds] to 1, then it will display 1 character every 1 second.
 conversely, if you set [seconds] to 0.02, it will display 1 character every 0.02 seconds, which works out to 50 character every second.
 
@@ -91,6 +93,9 @@ it will not use the font given by the novel.
 	--disallow-skipping-transitions
 	--disallow-skipping-delays
 it will not allow you to skip transitions or delays.
+
+	--dont-center-backgrounds
+backgrounds are centered by default, but if you prefer them to be aligned at the top left corner, pass this option.
 
 	--maximum-cache-entries
 it sets how many entries in the cache are allowed.
@@ -129,4 +134,4 @@ icon.png and thumbnail.png are supported, but icon-high.png and thumbnail-high.p
 
 individual zip files containing the resources (background.zip, script.zip, etc.) are supported. however, like vnds on ds, it must be using STORE mode.
 
-there is partial support for the vnds2 spec. see the vnds2-support.txt file for details.
+there is partial support for the vnds2 spec. honestly it's practically useless. see the vnds2-support.txt file for details.
