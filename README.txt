@@ -46,9 +46,9 @@ the options are...
 it will change the additional text in the window title.
 for example, the window title is normally "Snow Sakura [VNDS PC Player]"
 but if you pass the option 
-	--window-title-additional "(vnds)"
+	--window-title-additional " (vnds)"
 then the window title will become "Snow Sakura (vnds)"
-note that a space will be automatically added.
+note that a space will NOT be added automatically.
 
 	--allow-multiple-sound-effects
 if you pass this option, it will allow multiple sound effects to played at a time.
