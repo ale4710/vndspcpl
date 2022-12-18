@@ -172,7 +172,13 @@ local function updateSlot(file, slot)
 				do
 					local bgPromise = vnResource.get('background', file.background):and_then(function(image)
 						if(image) then
-							renderer:draw(image, 0, 0)
+							local p
+							if(userSettings.centerBackgrounds) then
+								p = {'center'}
+							else
+								p = {0, 0}
+							end
+							renderer:draw(image, unpack(p))
 						end
 					end)
 					table.insert(promises, bgPromise)

@@ -24,6 +24,8 @@ return function(saveFile)
 			local backgroundPromise = vnResource.get('background', saveFile.background):and_then(function(bg)
 				--renderer:draw(bg, 0, 0)
 				return {
+					isBackground = true,
+					--x and y is defined for fallback
 					x = 0,
 					y = 0,
 					image = bg
@@ -63,11 +65,24 @@ return function(saveFile)
 				Promise(pendingDraw):all_settled():and_then(function(drawResults)
 					for _, toDraw in ipairs(drawResults) do 
 						toDraw = toDraw.value
+						
+						local params
+						if(
+							toDraw.isBackground and
+							userSettings.centerBackgrounds
+						) then
+							params = {'center'}
+						else
+							params = {
+								toDraw.x,
+								toDraw.y
+							}
+						end
+						
 						if(toDraw) then 
 							renderer:draw(
 								toDraw.image,
-								toDraw.x,
-								toDraw.y
+								unpack(params)
 							)
 						end
 					end
