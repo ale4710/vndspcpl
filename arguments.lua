@@ -41,7 +41,9 @@ return function(cmdArguments)
 		
 		indicateInfiniteSfx = false,
 		
-		textboxMinimumLines = 4
+		textboxMinimumLines = 4,
+		
+		centerBackgrounds = true
 	}
 	fontSize = 64
 
@@ -170,6 +172,12 @@ return function(cmdArguments)
 							lines
 						)
 					end
+				end)
+			},
+			
+			['dont-center-backgrounds'] = {
+				during = (function()
+					userSettings.centerBackgrounds = false
 				end)
 			},
 

@@ -211,14 +211,25 @@ return function(mss)
 				for _, imgInfo in ipairs(images) do 
 					imgInfo = imgInfo.value
 					if(imgInfo) then
+						local params
 						if(imgInfo.isBackground) then 
 							renderer:clear()
+							if(userSettings.centerBackgrounds) then
+								params = {'center'}
+							else
+								params = {0, 0}
+							end
+						else
+							params = {
+								imgInfo.x,
+								imgInfo.y
+							}
 						end
+						
 						if(imgInfo.image) then 
 							renderer:draw(
 								imgInfo.image,
-								imgInfo.x,
-								imgInfo.y
+								unpack(params)
 							)
 						end
 					end

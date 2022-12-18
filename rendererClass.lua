@@ -31,15 +31,29 @@ function rendererClass:createScreen()
 	)
 end
 
-function rendererClass:draw(image, x, y)
+function rendererClass:draw(image, xOrCentered, y)
+	--check x or align
+	local x
+	if(xOrCentered == 'center') then
+		x = (self.width / 2) - (image:getWidth() / 2)
+		y = (self.height / 2) - (image:getHeight() / 2)
+	elseif(
+		(type(xOrCentered) == 'number') and
+		(type(y) == 'number')
+	) then
+		x = self.width * (xOrCentered / VN_SCREEN.w)
+		y = self.height * (y / VN_SCREEN.h)
+	else
+		error('one or more paramters is invalid')
+	end
+
 	love.graphics.setCanvas(self.screen)
 	love.graphics.push()
 	love.graphics.origin()
 	love.graphics.setColor(colors.white)
 	love.graphics.draw(
 		image, 
-		self.width * (x / VN_SCREEN.w),
-		self.height * (y / VN_SCREEN.h)
+		x, y
 	)
 	love.graphics.setCanvas()
 	love.graphics.pop()
@@ -49,9 +63,20 @@ function rendererClass:clear()
 	love.graphics.setCanvas(self.screen)
 	love.graphics.push()
 	love.graphics.origin()
+	
 	love.graphics.clear()
+	love.graphics.setColor(colors.black)
+	love.graphics.rectangle(
+		'fill',
+		0, 
+		0,
+		self.width,
+		self.height
+	)
+	
 	love.graphics.setCanvas()
 	love.graphics.pop()
+	print('[rendererClass] cleared screen')
 end
 
 function rendererClass:recalculate()
@@ -121,6 +146,8 @@ function rendererClass:getThumbnail(targetWidthOrScale, targetHeight)
 	
 	local img = love.graphics.newImage(cv:newImageData())
 	cv:release()
+	
+	print('[rendererClass] create thumbnail')
 	
 	return img
 end
