@@ -160,10 +160,10 @@ spec: https://github.com/VaYurik/vnds-online/blob/master/commands_list.txt
 		putting
 			["Take a look!"
 		is the same as
-			text "Take a look"!
+			text "Take a look!"
 		and displayed as
 			+---------------------------+
-			|  Take a look!             |
+			|  "Take a look!"           |
 			|                           |
 			|                           |
 			+---------------------------+
