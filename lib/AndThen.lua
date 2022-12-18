@@ -123,6 +123,7 @@ function PROMISE:then_(resolved, rejected)
 				--local new_value = callback(promise.value)
 				
 				if not success then
+					print('[promise] error in promise', new_value)
 					handler:reject(new_value)
 				else
 					become(new_value, handler)
