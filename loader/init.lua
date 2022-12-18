@@ -24,11 +24,13 @@ end
 local function loadArchives()
 	local pending = {}
 	for _, filename in pairs(FOLDER_FILE_NAMES) do 
-		getZipFileHandler(
-			gamepath .. '/' .. filename .. '.zip'
-		):and_then(function(zipInstance)
-			archives[filename] = zipInstance
-		end)
+		table.insert(pending,
+			getZipFileHandler(
+				gamepath .. '/' .. filename .. '.zip'
+			):and_then(function(zipInstance)
+				archives[filename] = zipInstance
+			end)
+		)
 	end
 	return Promise(pending):all_settled()
 end
