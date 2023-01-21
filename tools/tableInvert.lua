@@ -3,4 +3,6 @@ return function(tbl)
 	for key, value in pairs(tbl) do
 		ntbl[key] = value
 	end
+	
+	return ntbl
 end
