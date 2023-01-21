@@ -32,6 +32,14 @@ basically, it is untested.
 they are most likely not supported, due to how these operating systems deal with accessing the filesystem.
 at the moment i am blocking mobile from running this program.
 
+--[[ controls ]]--
+
+(Escape): Open Menu
+(Arrow Keys): Navigate Menus
+(Enter): Confirm Choice, or Progress Story
+(Space): Progress Story
+(Ctrl): Skip
+
 --[[ options ]]--
 
 there are options you can pass on to the program.
