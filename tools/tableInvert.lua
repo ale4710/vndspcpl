@@ -1,8 +1,7 @@
 return function(tbl)
 	local ntbl = {}
 	for key, value in pairs(tbl) do
-		ntbl[key] = value
+		ntbl[value] = key
 	end
-	
 	return ntbl
 end
