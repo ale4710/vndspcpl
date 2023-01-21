@@ -1,5 +1,4 @@
-INPUT_ACTIONS = {}
-for index, action in pairs({
+INPUT_ACTIONS = table.invert({
 	'continue',
 	'select',
 	'skip',
@@ -8,9 +7,7 @@ for index, action in pairs({
 	'down',
 	'left',
 	'right'
-}) do 
-	INPUT_ACTIONS[action] = index
-end
+})
 
 SKIP_INPUTS = {}
 
