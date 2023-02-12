@@ -10,21 +10,19 @@ demo video: https://youtu.be/Vr1maacJiJE
 
 --[[ how to start (if you dont know already) ]]--
 
-on windows...
+on windows and linux...
 there is a convinient script i made for you.
-first place a copy of love into a new folder called "love".
-after that, execute start.bat. 
+install love2d if not already.
+	on windows... first place a copy of love2d into a new folder called "love".
+	on linux... install love2d from your favorite package manager.
+after that, start the appropriate script.
+	on windows... execute start.bat
+	on linux... execute start.sh
 after that, drop a directory containing the novel you wish to read.
-alternatively, drop the directory onto start.bat.
-
-on linux...
-install love if not already installed.
-then run love in the game directory.
-make a script with your favorite shell interpreter (#!/bin/sh or whatever) if you wish.
-for other ways of starting the game please go to the love2d website.
+on windows, you can also drop the directory onto start.bat.
 
 on mac...
-i dont know i dont have a mac
+it might be a bit complicated. you need to get love2d from the website, and launch the game.
 please visit the love2d website for details.
 
 on android or ios...
@@ -43,7 +41,7 @@ at the moment i am blocking mobile from running this program.
 --[[ options ]]--
 
 there are options you can pass on to the program.
-if you're using windows, the options can be added into start.bat. see the contents of start.bat file for an example.
+you can save whatever options you want into the start scripts.
 
 !! important !!
 the last option given will ALWAYS be interpreted as the novel path.
