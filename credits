@@ -10,6 +10,7 @@ lovefs
 Copyright (c) 2016 Caldas Lopes
 MIT Licence
 https://github.com/linux-man/lovefs
+NOTE: i fixed a bug in this library - there was just a missing [;].
 
 middleclass
 Copyright (c) 2011 Enrique García Cota
