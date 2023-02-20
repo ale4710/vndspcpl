@@ -82,8 +82,20 @@ do --volume control
 		
 		soundHandler['set' .. self.spacename .. 'Volume'](newVolume)
 	end
-	function VcClass:getLabel()
-		return self.label .. ' (' .. math.floor(self:getVolume() * 100) .. '%)'
+	
+	local separators = {
+		[true] = {
+			[1] = '◂ ',
+			[2] = ' ▸'
+		},
+		[false] = {
+			[1] = '(',
+			[2] = ')'
+		}
+	}
+	function VcClass:getLabel(selected)
+		local s = separators[not not selected]
+		return self.label .. ' ' .. s[1] .. math.floor(self:getVolume() * 100) .. '%' .. s[2]
 	end
 	function VcClass:initialize(label, soundSpace)
 		MenuAction.initialize(self, label)
@@ -191,7 +203,7 @@ function menuState:draw()
 			textColor
 		)
 		love.graphics.print(
-			menuActions[actionName]:getLabel(),
+			menuActions[actionName]:getLabel(selected),
 			paddingLeft,
 			y,
 			0,
