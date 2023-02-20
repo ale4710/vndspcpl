@@ -77,7 +77,7 @@ do --volume control
 			--current volume
 			(self:getVolume() * 100) +
 			--change
-			(((up and 1) or -1) * 5)
+			(((up and 1) or -1) * 2)
 		) / 100
 		
 		soundHandler['set' .. self.spacename .. 'Volume'](newVolume)
@@ -121,10 +121,7 @@ function menuState:input(action)
 		if(move) then
 			if(move.vertical) then
 				navigator:move(move.move)
-			elseif(
-				selectedEntry and 
-				selectedEntry.horizontalMovement
-			) then
+			elseif(selectedEntry.horizontalMovement) then
 				selectedEntry:horizontalMovement(move.move)
 			end
 			return
@@ -134,7 +131,7 @@ function menuState:input(action)
 	--select
 	local quit
 	if(
-		selectedEntry and
+		selectedEntry.execute and
 		(action == INPUT_ACTIONS.select)
 	) then 
 		quit = selectedEntry:execute()
