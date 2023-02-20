@@ -12,7 +12,7 @@ return function(saveFile)
 			saveFile.position + 1,
 			saveFile.music,
 			saveFile.background,
-			drawingOrder
+			saveFile.sprites
 		)
 		
 		local promises = {}
