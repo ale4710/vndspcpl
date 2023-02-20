@@ -185,6 +185,7 @@ local lsStateSubstates = class('lsStateSubstates'):include(stateful)
 local lsssMainState = lsStateSubstates:addState('main')
 lsStateSubstates.draw = emptyfn
 lsStateSubstates.input = emptyfn
+lsStateSubstates.update = emptyfn
 local lsssFunc = lsStateSubstates:new()
 
 local scrollMan = scrollingListDisplayManagerClass:new(rows)
@@ -309,6 +310,10 @@ function lsState:draw()
 	love.graphics.setScissor()
 	
 	lsssFunc:draw()
+end
+
+function lsState:update(dt)
+	lsssFunc:update(dt)
 end
 
 function lsssMainState:input(action)
@@ -453,6 +458,14 @@ do
 		['delete'] = 'Delete'
 	}
 	
+	local buttonHoldLength = 1
+	local buttonHoldStart
+	function checkButtonHoldTime() 
+		return (
+			buttonHoldStart and ((now() - buttonHoldStart) / buttonHoldLength)
+		) or 0
+	end
+	
 	local function checkIfExists()
 		return not not getSaveFile(selected)
 	end
@@ -537,6 +550,7 @@ do
 	local lsssSaveFileAction = lsStateSubstates:addState('saveFileAction')
 	function lsssSaveFileAction:enteredState()
 		selectedAction = 1
+		buttonHoldStart = nil
 		
 		currentActions = {}
 	
@@ -561,25 +575,54 @@ do
 	function lsssSaveFileAction:draw()
 		saveFileModal.draw()
 		do
-			local buttonWidth = ((SCREEN.w - (buttonPadding * 2)) / #currentActions)
 			love.graphics.setFont(globalFont)
-			for index, action in ipairs(currentActions) do 
-				if(index == selectedAction) then
-					love.graphics.setColor(selectedColor)
-				else
-					love.graphics.setColor(normalColor)
-				end
-				
+			local y = saveFileModal.getTextYpos()
+			local buttonSpace = (SCREEN.w - (buttonPadding * 2))
+			if(checkButtonHoldTime() ~= 0) then 
+				love.graphics.setColor(normalColor)
 				love.graphics.printf(
-					BUTTON_LABELS[action],
-					buttonPadding + (buttonWidth * (index - 1)),
-					saveFileModal.getTextYpos(),
-					buttonWidth / userSettings.textScale,
+					'Hold To Confirm ' .. (BUTTON_LABELS[currentActions[selectedAction]] or '(Unknown)'),
+					buttonPadding,
+					y,
+					buttonSpace / userSettings.textScale,
 					'center',
 					0,
 					userSettings.textScale
 				)
+			else
+				local buttonWidth = (buttonSpace / #currentActions)
+				for index, action in ipairs(currentActions) do 
+					if(index == selectedAction) then
+						love.graphics.setColor(selectedColor)
+					else
+						love.graphics.setColor(normalColor)
+					end
+					
+					local x = buttonPadding + (buttonWidth * (index - 1))
+					local width = buttonWidth / userSettings.textScale
+					
+					love.graphics.printf(
+						BUTTON_LABELS[action],
+						x,
+						y,
+						width,
+						'center',
+						0,
+						userSettings.textScale
+					)
+				end
 			end
+			
+		end
+	end
+	
+	function lsssSaveFileAction:update()
+		if(checkInputActionDown(INPUT_ACTIONS.select)) then
+			if(checkButtonHoldTime() >= 1) then
+				SAVE_FILE_ACTION_FNS[currentActions[selectedAction]]()
+			end
+		else
+			buttonHoldStart = nil
 		end
 	end
 	
@@ -596,7 +639,14 @@ do
 		end
 		
 		if(action == INPUT_ACTIONS.select) then
-			SAVE_FILE_ACTION_FNS[currentActions[selectedAction]]()
+			buttonHoldStart = now()
+			
+			if(
+				(not userSettings.holdToConfirmSaveFileAction) or
+				currentActions[selectedAction] == 'back'
+			) then
+				SAVE_FILE_ACTION_FNS[currentActions[selectedAction]]()
+			end
 		elseif(action == INPUT_ACTIONS.cancel) then
 			self:gotoState('main')
 		end

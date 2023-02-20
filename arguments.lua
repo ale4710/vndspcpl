@@ -43,7 +43,9 @@ return function(cmdArguments)
 		
 		textboxMinimumLines = 4,
 		
-		centerBackgrounds = true
+		centerBackgrounds = true,
+		
+		holdToConfirmSaveFileAction = true
 	}
 	fontSize = 64
 
@@ -178,6 +180,12 @@ return function(cmdArguments)
 			['dont-center-backgrounds'] = {
 				during = (function()
 					userSettings.centerBackgrounds = false
+				end)
+			},
+			
+			['disable-hold-to-confirm-save-file-action'] = {
+				during = (function()
+					userSettings.holdToConfirmSaveFileAction = false
 				end)
 			},
 

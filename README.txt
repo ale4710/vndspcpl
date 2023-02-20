@@ -123,6 +123,10 @@ it will hide the arrow that lets you know that you can proceed.
 if you dont like the arrow, use this option to disable it.
 be warned, that disabling this will make it unclear whether or not you can continue in some cases.
 
+	--disable-hold-to-confirm-save-file-action
+by default, actions that will modify a save file in the save file manager will require you to hold the button to confirm your choice.
+if you do not want this, pass this option.
+
 	--debug-overlay
 it shows debug info over the screen. this is to show other info which is hard to show in the console.
 currently it only shows set variables.
