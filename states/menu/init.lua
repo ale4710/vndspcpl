@@ -12,42 +12,95 @@ local menuWidth = SCREEN.w * 0.3
 local headerPadding = 8
 local paddingLeft = 15
 
-local menuActions = {
-	['reset'] = {
-		fn = (function()
-			mainReset()
-			return true
-		end),
-		label = 'Reset'
-	},
-	['saveload'] = {
-		fn = (function(self)
-			self:gotoState('loadsave')
-			--game:gotoState('loadsave')
-		end),
-		label = 'Save File Manager'
-	},
-	['cycletextbox'] = {
-		fn = (function()
-			local tdm = userSettings.textBoxMode + 1
-			if(tdm > 2) then
-				tdm = 0
-			end
-			userSettings.textBoxMode = tdm
-			--return true
-		end),
-		label = 'Text Display'
-	},
-	['quit'] = {
-		fn = (function()
-			love.event.quit()
-			return true
-		end),
-		label = 'Quit'
-	}
-}
+--menu actions
+local MenuAction = class('MenuAction')
+function MenuAction:initialize(label) 
+	self.label = label
+end
+function MenuAction:getLabel()
+	return self.label or 'No Label'
+end
+
+local menuActions = {}
+
+do --reset
+	local e = MenuAction:new('Reset')
+	function e:execute() 
+		mainReset()
+		return true
+	end
+	menuActions['reset'] = e
+	e = nil
+end
+
+do --cycle textbox
+	local e = MenuAction:new('Cycle Textbox')
+	function e:execute() 
+		local tdm = userSettings.textBoxMode + 1
+		if(tdm > 2) then
+			tdm = 0
+		end
+		userSettings.textBoxMode = tdm
+	end
+	menuActions['cycletextbox'] = e
+	e = nil
+end
+
+do --save file man
+	local e = MenuAction:new('Save File Manager')
+	function e:execute() 
+		game:gotoState('loadsave')
+	end
+	menuActions['saveload'] = e
+	e = nil
+end
+
+do --quit
+	local e = MenuAction:new('Quit')
+	function e:execute() 
+		love.event.quit()
+		return true
+	end
+	menuActions['quit'] = e
+	e = nil
+end
+
+do --volume control
+	local VcClass = MenuAction:subclass('MenuActionVolumeControl')
+	
+	function VcClass:getVolume()
+		return soundHandler['get' .. self.spacename .. 'Volume']()
+	end
+	function VcClass:changeVolume(up)
+		--form name for change function thing
+		local newVolume = math.clamp(0, 100,
+			--current volume
+			(self:getVolume() * 100) +
+			--change
+			(((up and 1) or -1) * 5)
+		) / 100
+		
+		soundHandler['set' .. self.spacename .. 'Volume'](newVolume)
+	end
+	function VcClass:getLabel()
+		return self.label .. ' (' .. math.floor(self:getVolume() * 100) .. '%)'
+	end
+	function VcClass:initialize(label, soundSpace)
+		MenuAction.initialize(self, label)
+		self.spacename = soundSpace
+	end
+	function VcClass:horizontalMovement(move) 
+		self:changeVolume(move == 1)
+	end
+	
+	menuActions['musctrl'] = VcClass:new('Music', 'Bgm')
+	menuActions['sfxctrl'] = VcClass:new('Sounds', 'Sfx')
+end
+--end menu actions
 local menuOrder = {
 	'saveload',
+	'musctrl',
+	'sfxctrl',
 	'cycletextbox',
 	'reset',
 	'quit'
@@ -61,21 +114,30 @@ function menuState:enteredState()
 end
 
 function menuState:input(action)
+	local selectedEntry = menuActions[menuOrder[navigator.current]]
+
 	do --movement
 		local move = INPUT_NAVIGATION_LIST_HELPER[action]
-		if(
-			move and
-			move.vertical
-		) then 
+		if(move) then
+			if(move.vertical) then
 				navigator:move(move.move)
-				return
+			elseif(
+				selectedEntry and 
+				selectedEntry.horizontalMovement
+			) then
+				selectedEntry:horizontalMovement(move.move)
+			end
+			return
 		end
 	end
 	
 	--select
 	local quit
-	if(action == INPUT_ACTIONS.select) then 
-		quit = menuActions[menuOrder[navigator.current]].fn(self)
+	if(
+		selectedEntry and
+		(action == INPUT_ACTIONS.select)
+	) then 
+		quit = selectedEntry:execute()
 		if(not quit) then return end
 	end
 	
@@ -132,7 +194,7 @@ function menuState:draw()
 			textColor
 		)
 		love.graphics.print(
-			menuActions[actionName].label,
+			menuActions[actionName]:getLabel(),
 			paddingLeft,
 			y,
 			0,

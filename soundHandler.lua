@@ -21,6 +21,7 @@ function interface.setBgmVolume(volume)
 		currentBgm:setVolume(bgmVolume)
 	end
 end
+function interface.getBgmVolume() return bgmVolume end
 function interface.changeBgm(src)
 	if(userSettings.disableSounds) then return end
 	print(
@@ -52,6 +53,7 @@ function interface.setSfxVolume(volume)
 		end
 	end
 end
+function interface.getSfxVolume() return sfxVolume end
 
 local sfxClass = class('sfxClass')
 function sfxClass:initialize(src, loops)
