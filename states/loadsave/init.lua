@@ -627,7 +627,7 @@ do
 	end
 	
 	function lsssSaveFileAction:input(action)
-		do 
+		if(checkButtonHoldTime() == 0) then
 			local nav = INPUT_NAVIGATION_LIST_HELPER[action]
 			if(
 				nav and
@@ -647,7 +647,10 @@ do
 			) then
 				SAVE_FILE_ACTION_FNS[currentActions[selectedAction]]()
 			end
-		elseif(action == INPUT_ACTIONS.cancel) then
+		elseif(
+			(action == INPUT_ACTIONS.cancel) and
+			(checkButtonHoldTime() == 0)
+		) then
 			self:gotoState('main')
 		end
 	end
