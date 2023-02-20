@@ -28,7 +28,8 @@ INPUT_KEYBOARD_MAP = {
 	['right'] = INPUT_ACTIONS.right,
 	['lctrl'] = INPUT_ACTIONS.skip,
 	['rctrl'] = INPUT_ACTIONS.skip,
-	['escape'] = INPUT_ACTIONS.cancel
+	['escape'] = INPUT_ACTIONS.cancel,
+	['backspace'] = INPUT_ACTIONS.cancel
 }
 INPUT_KEYBOARD_REVERSE_MAP = {}
 
