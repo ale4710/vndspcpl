@@ -204,17 +204,15 @@ return function(cmdArguments)
 				end
 				lastFlagAction = nil
 			else
-				if(argOrder == #cmdArguments) then
-					gamepath = arg
-				else
-					local fa = flagActions[arg:sub(3)]
-					if(fa) then
-						if(fa.during) then
-							fa.during()
-						end
-
-						lastFlagAction = fa.after
+				local fa = flagActions[arg:sub(3)]
+				if(fa) then
+					if(fa.during) then
+						fa.during()
 					end
+
+					lastFlagAction = fa.after
+				elseif(argOrder == #cmdArguments) then
+					gamepath = arg
 				end
 			end
 		end

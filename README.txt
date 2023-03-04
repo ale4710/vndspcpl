@@ -44,9 +44,6 @@ at the moment i am blocking mobile from running this program.
 there are options you can pass on to the program.
 you can save whatever options you want into the start scripts.
 
-!! important !!
-the last option given will ALWAYS be interpreted as the novel path.
-
 the options are...
 
 	--window-title-additional "[text]"
