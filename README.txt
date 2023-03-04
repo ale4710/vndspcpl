@@ -3,6 +3,7 @@ vnds pc player
 
 created by ale4710
 https://gitlab.com/ale4710/vndspcpl
+https://github.com/ale4710/vndspcpl
 
 see the credits file for credits.
 
