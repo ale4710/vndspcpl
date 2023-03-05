@@ -41,6 +41,9 @@ at the moment i am blocking mobile from running this program.
 
 --[[ options ]]--
 
+usage is generally:
+start.sh [options] [path to novel]
+
 there are options you can pass on to the program.
 you can save whatever options you want into the start scripts.
 
