@@ -10,6 +10,7 @@ local receiveChannel = love.thread.getChannel(CHANNEL_RECEIVE_NAME)
 local listing
 
 local saveFileConverter = requirepp(mn, 'saveFileConverter')
+interface.loadGame = requirepp(mn, 'loadGame')
 
 local currentSaveFile = {
 	script = 'main.scr',
@@ -200,8 +201,10 @@ local function updateSlot(file, slot)
 				end
 				drawingOrder = nil
 				item.thumbnail = renderer:getThumbnail(100, 75)
-
 				renderer:clear()
+				
+				--misc
+				item.date = file.date
 			else
 				listing[slot] = {
 					broken = true

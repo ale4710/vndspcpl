@@ -505,7 +505,8 @@ do
 			end)
 		end),
 		['load'] = (function()
-			local loadGame = requirepp(mn, 'loader')
+			--local loadGame = requirepp(mn, 'loader')
+			local loadGame = saveFileManager.loadGame
 			return function()
 				local file = getSaveFile(selected)
 				
@@ -517,13 +518,6 @@ do
 					
 					loadGame(file):and_then(function(gameInfo)
 						print('[loadsave] load successful!')
-						--success
-							--reset
-						mainUpdateAllForSave()
-							--update sounds
-						soundHandler.changeBgm(gameInfo.bgm)
-						soundHandler.playSfx()
-
 						game:gotoState('main')
 					end):catch(function(err)
 						print(err)
