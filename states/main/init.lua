@@ -218,11 +218,17 @@ function mainReset()
 end
 
 --main state
-function mainstate:draw()
-	mssFnc:draw()
-end
+function mainstate:draw() mssFnc:draw() end
 function mainstate:update(dt) mssFnc:update(dt) end
 function mainstate:input(action) mssFnc:input(action) end
-function mainstate:rawInput(...) mssFnc:rawInput(...) end
+function mainstate:rawInput(...) 
+	local t, k = ...
+	if(t == 0 and k == 'tab') then 
+		--windows.saveLoad.createSaveLoadWindow() 
+		windows.settings.createSettingsWindow()
+	end
+	
+	mssFnc:rawInput(...) 
+end
 
 return mainstate

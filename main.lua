@@ -20,6 +20,7 @@ function love.load(cmdArguments)
 	class = require('lib.middleclass')
 	stateful = require('lib.stateful')
 	require('lib.AndThen')
+	loveframes = require('lib.loveframes')
 	utf8 = require('utf8')
 
 	function emptyfn()end
@@ -55,6 +56,9 @@ function love.load(cmdArguments)
 	function updateWindowTitle(text)
 		love.window.setTitle(text .. windowTitleAdditional)
 	end
+	
+	--also window
+	windows = require('windows')
 	
 	--parse arguments
 	require('arguments')(cmdArguments)
@@ -104,6 +108,7 @@ function love.load(cmdArguments)
 	--set callbacks
 	function love.draw()
 		game:draw()
+		loveframes.draw()
 		if(debugOverlay) then debugOverlay.draw() end
 	end
 
@@ -122,6 +127,7 @@ function love.load(cmdArguments)
 		_updateMouseVisibility()
 		
 		_andThenPendingCheck()
+		loveframes.update(dt)
 	end
 	
 	function love.quit()

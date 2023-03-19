@@ -46,15 +46,24 @@ for key, action in pairs(INPUT_KEYBOARD_MAP) do
 	INPUT_KEYBOARD_REVERSE_MAP[action] = reverseMap
 end
 
-function love.keypressed(...)
-	game:rawInput(0, ...)
-
-	local key = ...
-	key = INPUT_KEYBOARD_MAP[key]
+function love.keypressed(key, sc, rep)
+	game:rawInput(0, key, sc, rep)
 	
-	if(key) then
-		game:input(key)
+	local mappedkey = INPUT_KEYBOARD_MAP[key]
+	
+	if(mappedkey) then
+		game:input(mappedkey)
 	end
+	
+	loveframes.keypressed(key, rep)
+end
+
+function love.keyreleased(key)
+	loveframes.keyreleased(key)
+end
+
+function love.textinput(text)
+    loveframes.textinput(text)
 end
 
 function checkInputActionDown(action)
@@ -86,11 +95,16 @@ do --mouse
 		lastMouseMoved = now()
 	end
 	
-	function love.mousemoved(...)
+	function love.mousemoved()
 		setLMM()
 	end
 	
-	function love.mousepressed(...)
+	function love.mousepressed(x, y, btn)
 		setLMM()
+		loveframes.mousepressed(x, y, btn)
+	end
+	
+	function love.mousereleased(x, y, btn)
+	    loveframes.mousereleased(x, y, btn)
 	end
 end
