@@ -145,7 +145,7 @@ do
 							progressWidth * progressIndefiniteWidth,
 							progressHeight
 						)
-					else
+					elseif(thisProgress > 0) then
 						love.graphics.rectangle(
 							'fill',
 							x, y,
