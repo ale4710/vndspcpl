@@ -119,6 +119,7 @@ function bootstate:enteredState()
 						),
 						fontSize
 					)
+					textbox.calculateSizes()
 				end)
 				
 				table.insert(promises, fontPromise)

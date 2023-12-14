@@ -16,7 +16,8 @@ function interface.start(wl)
 	if(wl and #wl ~= 0) then 
 		print('[characterTicker] start animating')
 		--reset text
-		text:set('')
+		if(text) then text:release() end
+		text = nil
 		--clear remainingCharacters and printedCharacters
 		clearCharacterTables()
 		--okay now turn fragments of text into characters
@@ -69,21 +70,23 @@ end
 function draw()
 	love.graphics.setCanvas(canvas)
 	love.graphics.clear()
-	love.graphics.setColor(colora(colors.white, 1))
-	love.graphics.draw(text)
+	if(text) then
+		love.graphics.setColor(colora(colors.white, 1))
+		love.graphics.draw(text)
+	end
 	love.graphics.setCanvas()
 end
 interface.draw = draw
 
 function interface.update(dt) --this will return true when it is done with what it's doing
-	if(not text) then 
-		text = love.graphics.newText(font)
-	end
-	
 	if(checkDone()) then 
 		--already done
 		return true
 	else
+		if(not text) then 
+			text = love.graphics.newText(font)
+		end
+	
 		passedTime = passedTime + dt
 		if(passedTime >= userSettings.textProgressionSpeed) then 
 			--timer

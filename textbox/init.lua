@@ -11,7 +11,6 @@ local boxDefaultTextColor = colors.white
 local boxMinHeight
 local boxInnerWidth
 local textInverseScale
-local lineHeight
 
 local fullscreenTextRenderer = requirepp(mn, 'fullScreenTextRenderer')
 
@@ -76,9 +75,17 @@ function interface.toggleForceShow(toggle)
 	return forceShow
 end
 
-function interface.calculateSizes() 
-	lineHeight = font:getHeight() * userSettings.textScale
-	boxMinHeight = lineHeight * userSettings.textboxMinimumLines
+function interface.calculateSizes()
+	do 
+		local t = love.graphics.newText(font)
+		local s = 'a'
+		if(userSettings.textboxMinimumLines > 1) then 
+			s = s .. ('\na'):rep(userSettings.textboxMinimumLines - 1)
+		end
+		t:set(s)
+		boxMinHeight = t:getHeight() * userSettings.textScale
+		t:release()
+	end
 	
 	boxInnerWidth = SCREEN.w - (boxMargin * 2)
 	
@@ -100,23 +107,16 @@ end
 function calculateLineHeights(recentOnly)
 	mostRecentLineHeight = 0
 	local lines = (recentOnly and mostRecent) or buffer
+	local text = love.graphics.newText(font)
 	for index, line in ipairs(lines) do 
 		if(line) then
-			local success, errorIfNotSuccess, wt = pcall(font.getWrap, 
-				font,
-				line.actualText, 
-				(boxInnerWidth - (boxPadding * 2)) / userSettings.textScale
+			text:setf(
+				line.actualText,
+				(boxInnerWidth - (boxPadding * 2)) / userSettings.textScale,
+				'left'
 			)
-
-			if(not success) then 
-				print('[textbox] invalid utf8 string "' .. line.actualText .. '"')
-				error(errorIfNotSuccess)
-			end
 			
-			errorIfNotSuccess = nil
-			success = nil
-			
-			line.height = #wt
+			line.height = text:getHeight()
 			
 			if(
 				recentOnly or
@@ -125,10 +125,13 @@ function calculateLineHeights(recentOnly)
 					(index >= #lines - #mostRecent)
 				)
 			) then 
-				mostRecentLineHeight = mostRecentLineHeight + #wt
+				mostRecentLineHeight = mostRecentLineHeight + line.height
 			end
 		end
 	end
+	mostRecentLineHeight = mostRecentLineHeight * userSettings.textScale
+	--memory stuff
+	text:release()
 end
 function interface.recalculateLineHeights()
 	calculateLineHeights()
@@ -226,7 +229,7 @@ function interface.draw()
 
 		local boxInnerHeight = (boxPadding * 2) + math.max(
 			boxMinHeight,
-			mostRecentLineHeight * lineHeight
+			mostRecentLineHeight
 		)
 		
 		if(userSettings.textBoxMode == 1) then

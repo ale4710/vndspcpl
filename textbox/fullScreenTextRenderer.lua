@@ -8,6 +8,13 @@ function interface.initialize(b, ca)
 	interface.initialize = nil
 end
 
+local text
+local function initializeText()
+	if(not text) then
+		text = love.graphics.newText(font)
+	end
+end
+
 local screen
 
 function interface.setWidth(w)
@@ -32,13 +39,13 @@ local separatorHeight = 1.5
 local offsetDraw = 0
 
 function interface.draw()
-	local lh = font:getHeight() --line height
+	initializeText()
+
 	local movedPx = margin
 	
 	love.graphics.setCanvas(screen)
 	love.graphics.clear()
 	love.graphics.setColor(colors.white)
-	love.graphics.setFont(font)
 
 	for 
 		i = 1,
@@ -48,20 +55,16 @@ function interface.draw()
 		local cur = buffer[#buffer - (i + offsetDraw - 1)]
 		--print(#buffer - (i + offsetDraw - 1), #buffer)
 		
-		local textLineCount
+		-- local textHeight
+		-- if(cur) then
+			-- text:setf(cur.actualText, screen:getWidth(), 'left')
+			-- textHeight = text:getHeight()
+			-- text:set('')
+		-- else
+			-- textHeight = font:getHeight()
+		-- end
 		
-		if(cur) then
-			local _, wl = font:getWrap(
-				cur.actualText, 
-				screen:getWidth()
-			)
-			textLineCount = #wl
-		else
-			textLineCount = 1
-		end
-
-		local textHeight = (textLineCount * lh)
-		movedPx = movedPx + textHeight
+		movedPx = movedPx + cur.height
 		
 		if(cur and cur.text) then
 			local y, w = (screen:getHeight() - movedPx), (screen:getWidth())
