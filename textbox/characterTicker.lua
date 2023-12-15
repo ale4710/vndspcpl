@@ -1,6 +1,9 @@
 local interface = {}
 
 local text
+function interface.getTextInstance()
+	return text
+end
 
 local remainingCharacters = {}
 local printedCharacters = {}
@@ -10,7 +13,7 @@ local function clearCharacterTables()
 end
 local passedTime = 0
 
-local canvas
+local width
 
 function interface.start(wl)
 	if(wl and #wl ~= 0) then 
@@ -42,8 +45,6 @@ function interface.start(wl)
 	end
 end
 
-local draw --this is a function defined later.
-
 local function checkDone() 
 	return #remainingCharacters == 0
 end
@@ -57,26 +58,9 @@ function interface.forceDone()
 end
 
 function interface.setWidth(w)
-	canvas = love.graphics.newCanvas(
-		math.ceil(w / userSettings.textScale),
-		math.ceil(SCREEN.h / userSettings.textScale)
-	)
-	--print(canvas:getDimensions())
-	interface.canvas = canvas
+	--width = math.ceil(SCREEN.h / userSettings.textScale)
+	width = math.ceil(w / userSettings.textScale)
 end
-
-
---local is defined earlier
-function draw()
-	love.graphics.setCanvas(canvas)
-	love.graphics.clear()
-	if(text) then
-		love.graphics.setColor(colora(colors.white, 1))
-		love.graphics.draw(text)
-	end
-	love.graphics.setCanvas()
-end
-interface.draw = draw
 
 function interface.update(dt) --this will return true when it is done with what it's doing
 	if(checkDone()) then 
@@ -102,7 +86,7 @@ function interface.update(dt) --this will return true when it is done with what 
 			end
 			text:setf(
 				printedCharacters,
-				canvas:getWidth(), 
+				width, 
 				'left'
 			)
 		end
@@ -110,7 +94,6 @@ function interface.update(dt) --this will return true when it is done with what 
 		if(#remainingCharacters == 0) then 
 			print('[characterTicker] all done')
 			clearCharacterTables()
-			draw()
 			return true
 		end
 		return false

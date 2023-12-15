@@ -182,9 +182,6 @@ function interface.processPendingText()
 		else
 			calculateLineHeights(true)
 			characterAnimator.start(mostRecent)
-			if(userSettings.textBoxMode == 0) then 
-				characterAnimator.forceDone()
-			end
 		end
 		fullscreenTextRenderer.draw()
 	else
@@ -202,11 +199,11 @@ function interface.draw()
 	local top = left
 	
 	if(userSettings.textBoxMode == 0) then
-
+		--full screen text box
 		love.graphics.setColor(boxBackgroundColor)
 		love.graphics.rectangle('fill', 0, 0, SCREEN.w, SCREEN.h)
 		
-		--fullscreenTextRenderer.draw()
+		fullscreenTextRenderer.draw()
 		
 		love.graphics.setColor(colors.white)
 		love.graphics.setBlendMode('alpha', 'premultiplied')
@@ -219,6 +216,7 @@ function interface.draw()
 		)
 		love.graphics.setBlendMode('alpha')
 	else
+		--something else...
 		if(
 			userSettings.hideTextBoxWhenEmpty and 
 			empty and
@@ -247,16 +245,16 @@ function interface.draw()
 		love.graphics.setColor(colors.white)
 
 		if(not empty) then
-			if(not characterAnimator.checkDone()) then characterAnimator.draw() end
-			love.graphics.setBlendMode('alpha', 'premultiplied')
-			love.graphics.draw(
-				characterAnimator.canvas,
-				left + boxPadding,
-				top + boxPadding,
-				0, 
-				userSettings.textScale
-			)
-			love.graphics.setBlendMode('alpha')
+			local charAnimTextInst = characterAnimator.getTextInstance()
+			if(charAnimTextInst) then
+				love.graphics.draw(
+					charAnimTextInst,
+					left + boxPadding,
+					top + boxPadding,
+					0, 
+					userSettings.textScale
+				)
+			end
 		end
 	end
 end

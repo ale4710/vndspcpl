@@ -46,6 +46,7 @@ function interface.draw()
 	love.graphics.setCanvas(screen)
 	love.graphics.clear()
 	love.graphics.setColor(colors.white)
+	love.graphics.setFont(font)
 
 	for 
 		i = 1,
@@ -53,22 +54,13 @@ function interface.draw()
 		1
 	do 
 		local cur = buffer[#buffer - (i + offsetDraw - 1)]
-		--print(#buffer - (i + offsetDraw - 1), #buffer)
 		
-		-- local textHeight
-		-- if(cur) then
-			-- text:setf(cur.actualText, screen:getWidth(), 'left')
-			-- textHeight = text:getHeight()
-			-- text:set('')
-		-- else
-			-- textHeight = font:getHeight()
-		-- end
-		
-		movedPx = movedPx + cur.height
+		movedPx = movedPx + (cur.height or font:getHeight())
 		
 		if(cur and cur.text) then
 			local y, w = (screen:getHeight() - movedPx), (screen:getWidth())
 			
+			--separator
 			if(i == 1) then 
 				local sh = (separatorHeight / userSettings.textScale)
 				love.graphics.rectangle(
@@ -77,31 +69,20 @@ function interface.draw()
 					w, sh
 				)
 			end
-			love.graphics.printf(cur.text, 0, y, w)
 			
-			-- if(
-				-- i == 1 and
-				-- not characterAnimator.checkDone()
-			-- ) then
-				-- print('[fullscrenTextRenderer] drawing characterAnimator')
-				-- characterAnimator.draw()
-				-- love.graphics.setCanvas(screen)
-				-- love.graphics.setBlendMode('alpha', 'premultiplied')
-				-- love.graphics.draw(
-					-- characterAnimator.canvas,
-					-- 0,
-					-- screen:getHeight() - movedPx
-				-- )
-				-- love.graphics.setBlendMode('alpha')
-			-- else
-				-- love.graphics.setFont(font)
-				-- love.graphics.printf(
-					-- cur.text,
-					-- 0,
-					-- screen:getHeight() - movedPx,
-					-- screen:getWidth()
-				-- )
-			-- end
+			--text
+			if(
+				i == 1 and
+				not characterAnimator.checkDone()
+			) then 
+				--first and animating
+				local ti = characterAnimator.getTextInstance()
+				if(ti) then
+					love.graphics.draw(ti, 0, y)
+				end
+			else
+				love.graphics.printf(cur.text, 0, y, w)
+			end
 		end
 		
 		if(movedPx > screen:getHeight()) then
