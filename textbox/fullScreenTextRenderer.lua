@@ -8,6 +8,13 @@ function interface.initialize(b, ca)
 	interface.initialize = nil
 end
 
+local text
+local function initializeText()
+	if(not text) then
+		text = love.graphics.newText(font)
+	end
+end
+
 local screen
 
 function interface.setWidth(w)
@@ -32,7 +39,8 @@ local separatorHeight = 1.5
 local offsetDraw = 0
 
 function interface.draw()
-	local lh = font:getHeight() --line height
+	initializeText()
+
 	local movedPx = margin
 	
 	love.graphics.setCanvas(screen)
@@ -46,26 +54,13 @@ function interface.draw()
 		1
 	do 
 		local cur = buffer[#buffer - (i + offsetDraw - 1)]
-		--print(#buffer - (i + offsetDraw - 1), #buffer)
 		
-		local textLineCount
-		
-		if(cur) then
-			local _, wl = font:getWrap(
-				cur.actualText, 
-				screen:getWidth()
-			)
-			textLineCount = #wl
-		else
-			textLineCount = 1
-		end
-
-		local textHeight = (textLineCount * lh)
-		movedPx = movedPx + textHeight
+		movedPx = movedPx + (cur.height or font:getHeight())
 		
 		if(cur and cur.text) then
 			local y, w = (screen:getHeight() - movedPx), (screen:getWidth())
 			
+			--separator
 			if(i == 1) then 
 				local sh = (separatorHeight / userSettings.textScale)
 				love.graphics.rectangle(
@@ -74,31 +69,20 @@ function interface.draw()
 					w, sh
 				)
 			end
-			love.graphics.printf(cur.text, 0, y, w)
 			
-			-- if(
-				-- i == 1 and
-				-- not characterAnimator.checkDone()
-			-- ) then
-				-- print('[fullscrenTextRenderer] drawing characterAnimator')
-				-- characterAnimator.draw()
-				-- love.graphics.setCanvas(screen)
-				-- love.graphics.setBlendMode('alpha', 'premultiplied')
-				-- love.graphics.draw(
-					-- characterAnimator.canvas,
-					-- 0,
-					-- screen:getHeight() - movedPx
-				-- )
-				-- love.graphics.setBlendMode('alpha')
-			-- else
-				-- love.graphics.setFont(font)
-				-- love.graphics.printf(
-					-- cur.text,
-					-- 0,
-					-- screen:getHeight() - movedPx,
-					-- screen:getWidth()
-				-- )
-			-- end
+			--text
+			if(
+				i == 1 and
+				not characterAnimator.checkDone()
+			) then 
+				--first and animating
+				local ti = characterAnimator.getTextInstance()
+				if(ti) then
+					love.graphics.draw(ti, 0, y)
+				end
+			else
+				love.graphics.printf(cur.text, 0, y, w)
+			end
 		end
 		
 		if(movedPx > screen:getHeight()) then
