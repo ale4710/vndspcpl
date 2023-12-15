@@ -41,9 +41,20 @@ function interface.start(wl)
 		for _, line in ipairs(wl) do 
 			for _, textInfo in ipairs(line.rawFragments) do 
 				local text = textInfo.text or ''
-				for character = 1, #text, 1 do 
-					table.insert(baseCharacters, textInfo.color)
-					table.insert(baseCharacters, string.sub(text, character, character))
+				local nextCharStart = 1
+				while(true) do 
+					local cs, ce = string.find(
+						text,
+						utf8.charpattern,
+						nextCharStart
+					)
+					if(cs) then 
+						table.insert(baseCharacters, textInfo.color)
+						table.insert(baseCharacters, string.sub(text, cs, ce))
+						nextCharStart = ce + 1
+					else
+						break
+					end
 				end
 			end
 			--insert newline if not the last line
