@@ -52,7 +52,8 @@ local forceShow = false
 
 fullscreenTextRenderer.initialize(
 	buffer,
-	characterAnimator
+	characterAnimator,
+	mostRecent
 )
 
 function clearTextBox()

@@ -2,9 +2,11 @@ local interface = {}
 
 local buffer
 local characterAnimator
-function interface.initialize(b, ca)
+local mostRecent
+function interface.initialize(b, ca, mr)
 	buffer = b
 	characterAnimator = ca
+	mostRecent = mr
 	interface.initialize = nil
 end
 
@@ -61,7 +63,7 @@ function interface.draw()
 			local y, w = (screen:getHeight() - movedPx), (screen:getWidth())
 			
 			--separator
-			if(i == 1) then 
+			if(i == #mostRecent) then 
 				local sh = (separatorHeight / userSettings.textScale)
 				love.graphics.rectangle(
 					'fill',
@@ -71,16 +73,20 @@ function interface.draw()
 			end
 			
 			--text
+			local characterAnimatorDone = characterAnimator.checkDone()
 			if(
-				i == 1 and
-				not characterAnimator.checkDone()
+				i == #mostRecent and
+				not characterAnimatorDone
 			) then 
 				--first and animating
 				local ti = characterAnimator.getTextInstance()
 				if(ti) then
 					love.graphics.draw(ti, 0, y)
 				end
-			else
+			elseif(
+				i > #mostRecent or
+				characterAnimatorDone
+			) then
 				love.graphics.printf(cur.text, 0, y, w)
 			end
 		end
