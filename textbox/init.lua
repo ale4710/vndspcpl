@@ -96,12 +96,6 @@ function interface.calculateSizes()
 	--idk...
 	local sm = fullscreenTextRenderer.setMargin
 	sm(boxPadding + boxMargin)
-	--fullScreenTextRenderer.setMargin(boxMargin)
-	
-	if(previousPendingText) then
-		pendingText = previousPendingText
-		interface.processPendingText()
-	end
 end
 
 function calculateLineHeights(recentOnly)

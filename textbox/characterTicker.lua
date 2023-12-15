@@ -1,19 +1,32 @@
 local interface = {}
 
+local width
+
 local text
 function interface.getTextInstance()
 	return text
 end
+local function setText(fstr)
+	text:setf(
+		fstr,
+		width, 
+		'left'
+	)
+end
 
+local baseCharacters
 local remainingCharacters = {}
 local printedCharacters = {}
 local function clearCharacterTables()
 	for id in pairs(remainingCharacters) do remainingCharacters[id] = nil end
 	for id in pairs(printedCharacters) do printedCharacters[id] = nil end
 end
+local function copyBaseToRemain()
+	for i, c in pairs(baseCharacters) do 
+		remainingCharacters[i] = c
+	end
+end
 local passedTime = 0
-
-local width
 
 function interface.start(wl)
 	if(wl and #wl ~= 0) then 
@@ -24,20 +37,22 @@ function interface.start(wl)
 		--clear remainingCharacters and printedCharacters
 		clearCharacterTables()
 		--okay now turn fragments of text into characters
+		baseCharacters = {}
 		for _, line in ipairs(wl) do 
 			for _, textInfo in ipairs(line.rawFragments) do 
 				local text = textInfo.text or ''
 				for character = 1, #text, 1 do 
-					table.insert(remainingCharacters, textInfo.color)
-					table.insert(remainingCharacters, string.sub(text, character, character))
+					table.insert(baseCharacters, textInfo.color)
+					table.insert(baseCharacters, string.sub(text, character, character))
 				end
 			end
 			--insert newline if not the last line
 			if(line ~= #wl) then
-				table.insert(remainingCharacters, VNDS_COLOR_CODES[37])
-				table.insert(remainingCharacters, '\n')
+				table.insert(baseCharacters, VNDS_COLOR_CODES[37])
+				table.insert(baseCharacters, '\n')
 			end
 		end
+		copyBaseToRemain()
 		--reset vars
 		currentCharacter = 1
 		done = false
@@ -50,16 +65,22 @@ local function checkDone()
 end
 interface.checkDone = checkDone
 
-function interface.forceDone()
+local function forceDone()
 	if(not done) then 
 		print('[characterTicker] forcing finish on next update')
 		passedTime = math.huge
 	end
 end
+interface.forceDone = forceDone
 
 function interface.setWidth(w)
-	--width = math.ceil(SCREEN.h / userSettings.textScale)
 	width = math.ceil(w / userSettings.textScale)
+	if(text) then 
+		text:set('')
+		if(checkDone()) then
+			setText(baseCharacters)
+		end
+	end
 end
 
 function interface.update(dt) --this will return true when it is done with what it's doing
@@ -84,11 +105,7 @@ function interface.update(dt) --this will return true when it is done with what 
 					table.remove(remainingCharacters, 1)
 				)
 			end
-			text:setf(
-				printedCharacters,
-				width, 
-				'left'
-			)
+			setText(printedCharacters)
 		end
 		
 		if(#remainingCharacters == 0) then 
