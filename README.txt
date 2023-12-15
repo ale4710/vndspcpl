@@ -2,8 +2,9 @@ vnds pc player
 (working title)
 
 created by ale4710
-https://gitlab.com/ale4710/vndspcpl
-https://github.com/ale4710/vndspcpl
+project website: https://alego.web.fc2.com/vnds/vndspcpl/
+gitlab: https://gitlab.com/ale4710/vndspcpl
+github: https://github.com/ale4710/vndspcpl
 
 see the credits file for credits.
 
