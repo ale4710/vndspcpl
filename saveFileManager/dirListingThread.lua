@@ -10,7 +10,7 @@ local SAVEFILE_PATTERN = '^save(%d%d)%.sav$'
 local savedirStr = directory .. '/save/'
 require('love.system')
 if(love.system.getOS() == 'Windows') then 
-	savedirStr:gsub('/', '\\')
+	savedirStr = savedirStr:gsub('/', '\\')
 end
 
 local savedir = lovefs()
