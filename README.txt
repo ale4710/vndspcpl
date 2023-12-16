@@ -81,6 +81,11 @@ it will set the default mode of the textbox, where [mode] is a number from 0 to 
 1 = bottom
 2 = top
 
+	--textbox-background-opacity [opacity]
+it will set the opacity of the textbox, where [opacity] is a number from 0 to 100.
+100 means fully black, and 0 means there is no background.
+[opacity] should be an integer.
+
 	--text-box-minimum-lines [lines]
 it will set the minimum number of lines to show in the textbox. essentially, empty space.
 the textbox will expand to how many lines are required.

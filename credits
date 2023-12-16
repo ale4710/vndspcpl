@@ -1,32 +1,39 @@
+==[[ framework ]]==
+
+love2d
+Copyright (c) 2023 LÖVE Development Team 
+zlib license
+https://github.com/love2d/love
+
 ==[[ library ]]==
 
 AndThen
 Copyright (c) 2013 ppissanetzky
-MIT Licence
+MIT license
 https://github.com/ppissanetzky/AndThen
 NOTE: i modified the script to... uhh... work. the point is i modified it.
 
 lovefs
 Copyright (c) 2016 Caldas Lopes
-MIT Licence
+MIT license
 https://github.com/linux-man/lovefs
 NOTE: i fixed a bug in this library - there was just a missing [;].
 
 middleclass
 Copyright (c) 2011 Enrique García Cota
-MIT Licence
+MIT license
 https://github.com/kikito/middleclass/
 
 stateful.lua
 Copyright (c) 2011 Enrique García Cota
-MIT Licence
+MIT license
 https://github.com/kikito/stateful.lua
 
 ==[[ font ]]==
 
 default.ttf
 「さわらびゴシック」 by mshio
-Open Font Licence
+Open Font license
 https://osdn.net/users/mshio/
 
 ==[[sounds]]==
