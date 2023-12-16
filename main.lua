@@ -31,6 +31,10 @@ function love.load(cmdArguments)
 	require('constants')
 	require('tools')
 	require('etc')
+	
+	--parse arguments
+	require('arguments')(cmdArguments)
+	package.loaded['arguments'] = nil
 
 	local afl = require('asyncFileLoader')
 	io.asqread = afl.load
@@ -55,10 +59,6 @@ function love.load(cmdArguments)
 	function updateWindowTitle(text)
 		love.window.setTitle(text .. windowTitleAdditional)
 	end
-	
-	--parse arguments
-	require('arguments')(cmdArguments)
-	package.loaded['arguments'] = nil
 	
 	--font
 	-- note: fontSize is defined during the parsing of the arguments

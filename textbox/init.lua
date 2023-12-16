@@ -6,7 +6,7 @@ local previousPendingText
 
 local boxMargin = 15
 local boxPadding = 15
-local boxBackgroundColor = {colora(colors.black, 0.75)}
+local boxBackgroundColor = {colora(colors.black, userSettings.textboxBackgroundOpacity)}
 local boxDefaultTextColor = colors.white
 local boxMinHeight
 local boxInnerWidth
@@ -201,15 +201,21 @@ function interface.draw()
 		
 		fullscreenTextRenderer.draw()
 		
-		love.graphics.setColor(colors.white)
 		love.graphics.setBlendMode('alpha', 'premultiplied')
-		love.graphics.draw(
-			fullscreenTextRenderer.canvas,
-			boxPadding + boxMargin,
-			0,
-			0, 
-			userSettings.textScale
-		)
+		for i = 1, 0, -1 do
+			love.graphics.setColor(
+				i == 0 and colors.white or
+				colors.black
+			)
+			local drawOffset = i * 2
+			love.graphics.draw(
+				fullscreenTextRenderer.canvas,
+				boxPadding + boxMargin + drawOffset,
+				drawOffset,
+				0, 
+				userSettings.textScale
+			)
+		end
 		love.graphics.setBlendMode('alpha')
 	else
 		--something else...
@@ -237,19 +243,27 @@ function interface.draw()
 			boxInnerWidth,
 			boxInnerHeight
 		)
-		
-		love.graphics.setColor(colors.white)
 
 		if(not empty) then
 			local charAnimTextInst = characterAnimator.getTextInstance()
 			if(charAnimTextInst) then
-				love.graphics.draw(
-					charAnimTextInst,
-					left + boxPadding,
-					top + boxPadding,
-					0, 
-					userSettings.textScale
-				)
+				for i = 1, 0, -1 do
+					love.graphics.setColor(
+						i == 0 and colors.white or
+						colors.black
+					)
+					local drawOffset = i * 2
+					love.graphics.draw(
+						charAnimTextInst,
+						left + boxPadding + drawOffset,
+						top + boxPadding + drawOffset,
+						0, 
+						userSettings.textScale
+					)
+				end
+
+			
+				
 			end
 		end
 	end

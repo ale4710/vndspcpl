@@ -18,6 +18,8 @@ return function(cmdArguments)
 		textScale = 0.4,
 		--  scale factor of text.
 		
+		textboxBackgroundOpacity = 0.75,
+		
 		hideTextBoxWhenEmpty = true,
 		
 		ignoreNovelFont = false,
@@ -41,7 +43,7 @@ return function(cmdArguments)
 		
 		indicateInfiniteSfx = false,
 		
-		textboxMinimumLines = 4,
+		textboxMinimumLines = 1,
 		
 		centerBackgrounds = true,
 		
@@ -93,6 +95,17 @@ return function(cmdArguments)
 			['text-scale'] = {
 				after = (function(scale)
 					userSettings.textScale = tonumber(scale) or userSettings.textScale
+				end)
+			},
+			
+			['textbox-background-opacity'] = {
+				after = (function(op)
+					op = tonumber(op) or (userSettings.textboxBackgroundOpacity * 100)
+					
+					userSettings.textboxBackgroundOpacity = math.clamp(
+						0, 100,
+						op
+					) / 100
 				end)
 			},
 			
