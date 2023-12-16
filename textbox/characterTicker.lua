@@ -39,18 +39,17 @@ function interface.start(wl)
 		--okay now turn fragments of text into characters
 		baseCharacters = {}
 		for _, line in ipairs(wl) do 
-			for _, textInfo in ipairs(line.rawFragments) do 
-				local text = textInfo.text or ''
+			for _, fragment in ipairs(line.rawFragments) do 
 				local nextCharStart = 1
 				while(true) do 
 					local cs, ce = string.find(
-						text,
+						fragment.text,
 						utf8.charpattern,
 						nextCharStart
 					)
 					if(cs) then 
-						table.insert(baseCharacters, textInfo.color)
-						table.insert(baseCharacters, string.sub(text, cs, ce))
+						table.insert(baseCharacters, fragment.color)
+						table.insert(baseCharacters, string.sub(fragment.text, cs, ce))
 						nextCharStart = ce + 1
 					else
 						break

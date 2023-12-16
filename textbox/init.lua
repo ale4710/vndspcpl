@@ -153,12 +153,13 @@ function interface.processPendingText()
 				local actualText = ''
 				
 				for _, fragment in ipairs(line) do
-					table.insert(pfcText, VNDS_COLOR_CODES[fragment.color] or boxDefaultTextColor)
+					fragment.text = fragment.text or ''
+					fragment.color = VNDS_COLOR_CODES[fragment.color] or boxDefaultTextColor
+				
+					table.insert(pfcText, fragment.color)
 					
-					local text = fragment.text or ''
-					table.insert(pfcText, text)
-					actualText = actualText .. text
-					
+					table.insert(pfcText, fragment.text)
+					actualText = actualText .. fragment.text
 				end
 				
 				textInfo.text = pfcText
