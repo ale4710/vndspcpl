@@ -40,6 +40,15 @@ at the moment i am blocking mobile from running this program.
 (Space): Progress Story
 (Ctrl): Skip
 
+--[[ advanced options ]]--
+
+there are options that you can pass onto the program.
+open options.txt and view them there.
+
+--[[ credits ]]--
+
+available at credits.txt.
+
 --[[ support ]]--
 
 normal vnds files are (should be) fully supported.
