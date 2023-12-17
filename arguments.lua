@@ -201,6 +201,28 @@ return function(cmdArguments)
 					userSettings.holdToConfirmSaveFileAction = false
 				end)
 			},
+			
+			['bgm-volume'] = {
+				after = (function(vol)
+					vol = tonumber(vol)
+					if(vol) then
+						soundHandler.setBgmVolume(
+							math.floor(math.clamp(0, 100, vol)) / 100
+						)
+					end
+				end)
+			},
+			
+			['sfx-volume'] = {
+				after = (function(vol)
+					vol = tonumber(vol)
+					if(vol) then
+						soundHandler.setSfxVolume(
+							math.floor(math.clamp(0, 100, vol)) / 100
+						)
+					end
+				end)
+			},
 
 			['debug-overlay'] = {
 				during = (function()

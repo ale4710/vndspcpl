@@ -22,6 +22,11 @@ looping sound effects will stop on the next sound effect.
 there is a progress bar for sound effects, however nothing is shown for infinite sound effects.
 if you pass this option, it will show an indicator for infinite sound effects.
 
+	--bgm-volume [volume]
+	--sfx-volume [volume]
+sets the volume for background music (bgm) or sound effects (sfx).
+volume should be an integer from 0 to 100.
+
 	--disable-sounds
 disables sounds, execpt message box sound.
 

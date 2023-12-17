@@ -31,28 +31,29 @@ function love.load(cmdArguments)
 	require('constants')
 	require('tools')
 	require('etc')
-	
-	--parse arguments
-	require('arguments')(cmdArguments)
-	package.loaded['arguments'] = nil
 
 	local afl = require('asyncFileLoader')
 	io.asqread = afl.load
 	_aflCheck = afl.check
 	afl = nil
 
-	--stuff
+	--stuff (does not depend on userSettings)
 	vnResource = require('loader')
 	saveFileManager = require('saveFileManager')
 	getZipFileHandler = require('storeZipReader')
-	--renderer = require('renderer')
 	rendererClass = require('rendererClass')
 	variableHandler = require('variableHandler')
 	soundHandler = require('soundHandler')
-	textbox = require('textbox')
 	statusIcon = require('statusIcon')
-	--love.keyboard.setKeyRepeat(true)
 	collectgarbage('setstepmul', 400)
+	
+	--parse arguments (load userSettings)
+	require('arguments')(cmdArguments)
+	package.loaded['arguments'] = nil
+	cmdArguments = nil --dont need it anymore
+	
+	--more stuff (depends on userSettings)
+	textbox = require('textbox')
 
 	--window
 	windowTitleAdditional = ' [VNDS PC Player]'
