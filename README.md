@@ -1,8 +1,8 @@
 # vndspcpl
 
-a vnds interpreter for desktop.
+a vnds interpreter for desktop. created by ale4710.
 
-created by ale4710
+vndspcpl means "**VNDS PC PL**ayer"
 
 [project website](https://alego.web.fc2.com/vnds/vndspcpl/) / [gitlab](https://gitlab.com/ale4710/vndspcpl) / [github](https://github.com/ale4710/vndspcpl)
 
