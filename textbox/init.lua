@@ -99,7 +99,7 @@ function interface.calculateSizes()
 	sm(boxPadding + boxMargin)
 end
 
-function calculateLineHeights(recentOnly)
+local function calculateLineHeights(recentOnly)
 	mostRecentLineHeight = 0
 	local lines = (recentOnly and mostRecent) or buffer
 	local text = love.graphics.newText(font)
