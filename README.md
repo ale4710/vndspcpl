@@ -6,6 +6,10 @@ vndspcpl means "**VNDS PC PL**ayer"
 
 [project website](https://alego.web.fc2.com/vnds/vndspcpl/) / [codeberg](https://codeberg.org/ale4710/vndspcpl)
 
+## notice
+
+this project will only be updated on codeberg from now on. please go there for the latest version.
+
 ## how to start
 
 ### packaged version
