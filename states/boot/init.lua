@@ -99,6 +99,8 @@ function bootstate:enteredState()
 						dims.width,
 						dims.height
 					)
+					
+					SCREEN.setAspectRatio(dims.width / dims.height)
 				end):finally(function()
 					return Promise(function(responder)
 						saveFileManager.initialize(function()

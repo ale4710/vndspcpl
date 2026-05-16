@@ -37,22 +37,27 @@ local numberFontSizeMultiplier = 2
 
 local cardWidth, cardHeight
 
-local thumbnailAspectRatio = 4 / 3
 local thumbnailWidth, thumbnailHeight
 
 local gridCanvas
 local gridCanvasDrawBuffer = 5
 
 local function calculateSizes()
-	cardWidth = ((SCREEN.w - leftPadding - rightPadding - (gridItemPadding * (columns - 1))) / columns)
-	cardHeight = ((SCREEN.h - top - bottom - (gridItemPadding * (rows - 1))) / rows)
+	local gridWidth = SCREEN.w - leftPadding - rightPadding
+	local gridHeight = SCREEN.h - top - bottom
+	cardWidth = ((gridWidth - (gridItemPadding * (columns - 1))) / columns)
+	cardHeight = ((gridHeight - (gridItemPadding * (rows - 1))) / rows)
 	
 	thumbnailHeight = (cardHeight) - (innerPadding * 2)
-	thumbnailWidth = thumbnailHeight * thumbnailAspectRatio
+	thumbnailWidth = thumbnailHeight * (SCREEN.w / SCREEN.h)
 	
+	if(gridCanvas) then gridCanvas:release() end
+
+	local _, _, scale = SCREEN.getTransformInfo()
+
 	gridCanvas = love.graphics.newCanvas(
-		SCREEN.w + (gridCanvasDrawBuffer * 2), 
-		SCREEN.h + (gridCanvasDrawBuffer * 2)
+		math.ceil(gridWidth * scale),
+		math.ceil(gridHeight * scale)
 	)
 end
 calculateSizes()
@@ -120,11 +125,6 @@ local function drawCard(x, y, currentSlot, selected)
 			else
 				local textInnerWidth = cardWidth - thumbnailWidth - (innerPadding * 3)
 				love.graphics.setFont(font)
-				love.graphics.setScissor(
-					tx, ty,
-					textInnerWidth,
-					cardHeight - (innerPadding * 2)
-				)
 				love.graphics.printf(
 					saveFile.text or 'No preview text available.',
 					tx,
@@ -134,7 +134,6 @@ local function drawCard(x, y, currentSlot, selected)
 					0,
 					ts
 				)
-				love.graphics.setScissor()
 				love.graphics.setFont(globalFont)
 				
 				love.graphics.setColor(colors.white)
@@ -206,19 +205,12 @@ local function getSaveSlotOffset()
 	return (math.floor(scrollMan.drawTopPosition) * columns) + 1
 end
 
-local function setGridScissor()
-	local scissorBuffer = gridItemPadding / 2
-	love.graphics.setScissor(
-		leftPadding - scissorBuffer,
-		top - scissorBuffer, 
-		SCREEN.w - leftPadding - rightPadding + (scissorBuffer * 2),
-		SCREEN.h - top - bottom + (scissorBuffer * 2)
-	)
-end
-
 function lsState:draw()
 	--draw the game screen under everything else
 	states['main']:draw()
+
+	--use for later
+	local gdx, gdy, gscale = SCREEN.getTransformInfo()
 	
 	--bg
 	love.graphics.setColor(colora(colors.black, 0.7))
@@ -227,25 +219,6 @@ function lsState:draw()
 		0, 0,
 		SCREEN.w, SCREEN.h
 	)
-	
-	--[[
-	--border lines
-	do
-		love.graphics.setColor(normalColor)
-		--   top
-		local blx = top - (gridItemPadding / 2)
-		love.graphics.line(
-			0, blx,
-			SCREEN.w, blx
-		)
-		--   bottom
-		local bly = SCREEN.h - bottom + (gridItemPadding / 2)
-		love.graphics.line(
-			0, bly,
-			SCREEN.w, bly
-		)
-	end
-	]]
 
 	--header
 	love.graphics.setFont(globalFont)
@@ -263,23 +236,25 @@ function lsState:draw()
 	
 	love.graphics.setLineWidth(lineWidth)
 	
+	love.graphics.push()
+	love.graphics.origin()
+	love.graphics.scale(gscale, gscale)
 	love.graphics.setCanvas(gridCanvas)
 	love.graphics.clear()
-	
 	
 	for
 		cr = 0,
 		rows,
 		1
 	do 
-		local y = gridCanvasDrawBuffer + ((cardHeight + gridItemPadding) * (cr - (scrollMan.drawTopPosition % 1)))
+		local y = ((cardHeight + gridItemPadding) * (cr - (scrollMan.drawTopPosition % 1)))
 		for
 			cc = 0,
 			columns - 1,
 			1
 		do
 			local currentSlot = (saveFileIndexOffset + drawingCard)
-			local x = gridCanvasDrawBuffer + ((cardWidth + gridItemPadding) * cc)
+			local x = ((cardWidth + gridItemPadding) * cc)
 			
 			drawCard(
 				x, y,
@@ -298,16 +273,18 @@ function lsState:draw()
 	
 	::finish::
 	love.graphics.setCanvas()
+	love.graphics.pop()
 	love.graphics.setColor(colors.white)
-	setGridScissor()
 	love.graphics.setBlendMode('alpha', 'premultiplied')
-	love.graphics.draw(
-		gridCanvas,
-		leftPadding - gridCanvasDrawBuffer,
-		top - gridCanvasDrawBuffer
-	)
+	do
+		local _, _, scale = SCREEN.getTransformInfo()
+		love.graphics.push()
+		love.graphics.translate(leftPadding, top)
+		love.graphics.scale(1 / gscale, 1 / gscale)
+		love.graphics.draw(gridCanvas)
+		love.graphics.pop()
+	end
 	love.graphics.setBlendMode('alpha')
-	love.graphics.setScissor()
 	
 	lsssFunc:draw()
 end

@@ -25,7 +25,7 @@ function interface.setWidth(w)
 	end
 
 	screen = love.graphics.newCanvas(
-		math.ceil(w / userSettings.textScale), 
+		math.ceil(w / userSettings.textScale),
 		math.ceil(SCREEN.h / userSettings.textScale)
 	)
 
@@ -42,6 +42,9 @@ local offsetDraw = 0
 
 function interface.draw()
 	initializeText()
+	
+	love.graphics.push()
+	love.graphics.origin()
 
 	local movedPx = margin
 	
@@ -97,6 +100,8 @@ function interface.draw()
 	end
 	
 	love.graphics.setCanvas()
+	
+	love.graphics.pop()
 end
 
 return interface

@@ -30,7 +30,7 @@ function love.load(cmdArguments)
 	colors = require('colors')
 	require('constants')
 	require('tools')
-	require('etc')
+	require('size')
 
 	local afl = require('asyncFileLoader')
 	io.asqread = afl.load
@@ -104,7 +104,18 @@ function love.load(cmdArguments)
 	
 	--set callbacks
 	function love.draw()
+		--scale window
+		love.graphics.push()
+		do
+			local dx, dy, scale = SCREEN.getTransformInfo()
+			love.graphics.translate(dx, dy)
+			love.graphics.scale(scale, scale)
+		end
+		
 		game:draw()
+
+		love.graphics.pop()
+		
 		if(debugOverlay) then debugOverlay.draw() end
 	end
 

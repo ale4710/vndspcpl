@@ -23,6 +23,7 @@ local buttonColors = {
 
 local screen
 local function resizeScreen()
+	if(screen) then screen:release() end
 	screen = love.graphics.newCanvas(
 		(SCREEN.w / userSettings.textScale) - (buttonMargin * 2),
 		SCREEN.h / userSettings.textScale
