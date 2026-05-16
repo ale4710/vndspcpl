@@ -4,7 +4,7 @@ a vnds interpreter for desktop. created by ale4710.
 
 vndspcpl means "**VNDS PC PL**ayer"
 
-[project website](https://alego.web.fc2.com/vnds/vndspcpl/) / [gitlab](https://gitlab.com/ale4710/vndspcpl) / [github](https://github.com/ale4710/vndspcpl)
+[project website](https://alego.web.fc2.com/vnds/vndspcpl/) / [codeberg](https://codeberg.org/ale4710/vndspcpl)
 
 ## how to start
 
@@ -69,3 +69,11 @@ the `img.ini` file is supported. any resolution can be used, but know that the c
 ### vnds2
 
 there is partial support for the vnds2 spec. honestly it's practically useless, and i have given up on fully implementing it. see the `vnds2-support.txt` file for details.
+
+## licence
+
+as of 2026-05-16, vndspcpl is licenced under the BSD 3-Clause License.
+
+basically, you can do whatever you want, but you have to give me credit.
+
+note that this uses other libraries and resources that may be licenced under different terms. see credits.txt for details.
