@@ -74,28 +74,22 @@ function interface.get(which, path)
 			false
 		)
 	else
-		return Promise(function(responder)
+		print('[loader] loading "' .. path .. '" (' .. which .. ') from disk')
+		return io.asqread(formPathWG(which, path)):catch(function(err)
 			if(archives[which]) then
-				print('[loader] loading "' .. path .. '" (' .. which .. ') from archive')
-				autoResponder(
-					archives[which]:getFile(
-						formPath(which, path)
-					),
-					responder,
-					which,
-					path
-				)
+				print('[loader] "' .. path .. '" (' .. which .. ') not found on disk, trying from archive')
+				return archives[which]:getFile(formPath(which, path))
 			else
-				print('[loader] loading "' .. path .. '" (' .. which .. ') from disk')
-				autoResponder(
-					io.asqread(
-						formPathWG(which, path)
-					),
-					responder,
-					which,
-					path
-				)
+				return Promise():then_reject()
 			end
+		end):and_then(function(data)
+			return processFile(
+				data,
+				which,
+				path
+			)
+		end):catch(function()
+			return Promise(false)
 		end)
 	end
 end
