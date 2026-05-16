@@ -37,7 +37,9 @@ local numberFontSizeMultiplier = 2
 
 local cardWidth, cardHeight
 
-local thumbnailWidth, thumbnailHeight
+local innerCardHeight
+
+local thumbnailWidth
 
 local gridCanvas
 local gridCanvasDrawBuffer = 5
@@ -47,9 +49,10 @@ local function calculateSizes()
 	local gridHeight = SCREEN.h - top - bottom
 	cardWidth = ((gridWidth - (gridItemPadding * (columns - 1))) / columns)
 	cardHeight = ((gridHeight - (gridItemPadding * (rows - 1))) / rows)
+
+	innerCardHeight = (cardHeight) - (innerPadding * 2)
 	
-	thumbnailHeight = (cardHeight) - (innerPadding * 2)
-	thumbnailWidth = thumbnailHeight * (SCREEN.w / SCREEN.h)
+	thumbnailWidth = innerCardHeight * (SCREEN.w / SCREEN.h)
 	
 	if(gridCanvas) then gridCanvas:release() end
 
@@ -103,7 +106,7 @@ local function drawCard(x, y, currentSlot, selected)
 			x + innerPadding,
 			y + innerPadding,
 			thumbnailWidth,
-			thumbnailHeight
+			innerCardHeight
 		)
 		love.graphics.setColor(color)
 		
@@ -120,20 +123,28 @@ local function drawCard(x, y, currentSlot, selected)
 					x + innerPadding,
 					y + innerPadding,
 					thumbnailWidth,
-					thumbnailHeight
+					innerCardHeight
 				)
 			else
 				local textInnerWidth = cardWidth - thumbnailWidth - (innerPadding * 3)
 				love.graphics.setFont(font)
-				love.graphics.printf(
-					saveFile.text or 'No preview text available.',
-					tx,
-					ty,
-					(textInnerWidth / ts),
-					'left',
-					0,
-					ts
-				)
+				do
+					local _, textLines = font:getWrap(
+						saveFile.text or 'No preview text available.',
+						textInnerWidth / ts
+					)
+					local dty = font:getHeight() * ts
+					for lineIndex, line in ipairs(textLines) do
+						local lty = ty + (dty * (lineIndex - 1))
+						if(lty + dty > y + cardHeight) then break end
+						love.graphics.push()
+						love.graphics.translate(tx, lty)
+						love.graphics.scale(ts, ts)
+						love.graphics.print(line)
+						love.graphics.pop()
+					end
+				end
+
 				love.graphics.setFont(globalFont)
 				
 				love.graphics.setColor(colors.white)
@@ -141,7 +152,7 @@ local function drawCard(x, y, currentSlot, selected)
 					saveFile.thumbnail:getWidth(),
 					saveFile.thumbnail:getHeight(),
 					thumbnailWidth,
-					thumbnailHeight
+					innerCardHeight
 				)
 				love.graphics.draw(
 					saveFile.thumbnail,
@@ -163,7 +174,7 @@ local function drawCard(x, y, currentSlot, selected)
 				x + innerPadding,
 				y + innerPadding,
 				thumbnailWidth,
-				thumbnailHeight
+				innerCardHeight
 			)
 		end
 	end
